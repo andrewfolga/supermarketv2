@@ -5,14 +5,13 @@ import qmetric.supermarket.domain.Item;
 import qmetric.supermarket.domain.ItemType;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
 /**
  * Created by andrzejfolga on 01/05/2017.
  */
-public class Promotion implements Function<Item, BigDecimal> {
+public abstract class Promotion implements Function<Item, BigDecimal> {
 
     protected final BigDecimal triggerQuantity;
     protected final Optional<BigDecimal> targetQuantity;
@@ -56,6 +55,8 @@ public class Promotion implements Function<Item, BigDecimal> {
     public BigDecimal getPromotionQuantity(Item item) {
         return targetQuantity.orElseGet(() -> BigDecimal.ONE);
     }
+
+    public abstract PromotionType getPromotionType();
 
     public String geDescription() {
         return null;

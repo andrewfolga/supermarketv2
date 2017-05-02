@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 /**
- * Created by andrzejfolga on 01/05/2017.
+ * Created by andrzejfolga on 02/05/2017.
  */
 public class Receipt {
 

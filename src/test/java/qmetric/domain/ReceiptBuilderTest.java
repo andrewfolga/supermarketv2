@@ -1,5 +1,7 @@
 package qmetric.domain;
 
+import org.assertj.core.api.JUnitSoftAssertions;
+import org.junit.Rule;
 import org.junit.Test;
 import qmetric.supermarket.domain.*;
 import qmetric.supermarket.domain.promotion.Promotion;
@@ -17,6 +19,9 @@ import static qmetric.supermarket.domain.ItemType.BEANS;
  */
 public class ReceiptBuilderTest {
 
+    @Rule
+    public final JUnitSoftAssertions softly = new JUnitSoftAssertions();
+
     private ReceiptBuilder receiptBuilder = new ReceiptBuilder();
 
     @Test
@@ -27,14 +32,14 @@ public class ReceiptBuilderTest {
 
         Receipt receipt = receiptBuilder.build(basket, Arrays.asList());
 
-        assertTrue(receipt.hasTotalToPay(totalToPay -> totalToPay.equals(new BigDecimal("1.50"))));
-        assertTrue(receipt.hasSubTotal(subTotal -> subTotal.equals(new BigDecimal("1.50"))));
-        assertTrue(receipt.hasTotalSavings(totalSaving -> totalSaving.equals(new BigDecimal("0.00"))));
-        assertTrue(receipt.hasReceiptItems(receiptItems -> {
+        softly.assertThat(receipt.hasTotalToPay(totalToPay -> totalToPay.equals(new BigDecimal("1.50")))).as("Total to pay").isTrue();
+        softly.assertThat(receipt.hasSubTotal(subTotal -> subTotal.equals(new BigDecimal("1.50")))).as("Sub-total").isTrue();
+        softly.assertThat(receipt.hasTotalSavings(totalSaving -> totalSaving.equals(new BigDecimal("0.00")))).as("Total savings").isTrue();
+        softly.assertThat(receipt.hasReceiptItems(receiptItems -> {
             ReceiptItem receiptItem = new ReceiptItem("Beans", new BigDecimal("0.50"));
             return receiptItems.stream().filter(e -> e.equals(receiptItem)).count() == 3;
-        }));
-        assertTrue(receipt.hasSavingItems(savingItems -> savingItems.isEmpty()));
+        })).as("Receipt items").isTrue();
+        softly.assertThat(receipt.hasSavingItems(savingItems -> savingItems.isEmpty())).as("Savings items").isTrue();
     }
 
     @Test
@@ -47,17 +52,17 @@ public class ReceiptBuilderTest {
 
         Receipt receipt = receiptBuilder.build(basket, availablePromotions);
 
-        assertTrue(receipt.hasTotalToPay(totalToPay -> totalToPay.equals(new BigDecimal("1.00"))));
-        assertTrue(receipt.hasSubTotal(subTotal -> subTotal.equals(new BigDecimal("1.50"))));
-        assertTrue(receipt.hasTotalSavings(totalSaving -> totalSaving.equals(new BigDecimal("-0.50"))));
-        assertTrue(receipt.hasReceiptItems(receiptItems -> {
+        softly.assertThat(receipt.hasTotalToPay(totalToPay -> totalToPay.equals(new BigDecimal("1.00")))).as("Total to pay").isTrue();
+        softly.assertThat(receipt.hasSubTotal(subTotal -> subTotal.equals(new BigDecimal("1.50")))).as("Sub-total").isTrue();
+        softly.assertThat(receipt.hasTotalSavings(totalSaving -> totalSaving.equals(new BigDecimal("-0.50")))).as("Total savings").isTrue();
+        softly.assertThat(receipt.hasReceiptItems(receiptItems -> {
             ReceiptItem receiptItem = new ReceiptItem("Beans", new BigDecimal("0.50"));
             return receiptItems.stream().filter(e -> e.equals(receiptItem)).count() == 3;
-        }));
-        assertTrue(receipt.hasSavingItems(savingItems -> {
+        })).as("Receipt items").isTrue();
+        softly.assertThat(receipt.hasSavingItems(savingItems -> {
             ReceiptItem receiptItem = new ReceiptItem("Beans 3 for 2", new BigDecimal("-0.50"));
             return savingItems.stream().filter(e -> e.equals(receiptItem)).count() == 1;
-        }));
+        })).as("Savings items").isTrue();
     }
 
 }

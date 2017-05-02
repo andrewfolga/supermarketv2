@@ -1,4 +1,4 @@
-package qmetric.promotion;
+package qmetric.domain;
 
 import org.junit.Assert;
 import org.junit.Test;

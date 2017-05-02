@@ -59,6 +59,6 @@ public abstract class Promotion implements Function<Item, BigDecimal> {
     public abstract PromotionType getPromotionType();
 
     public String geDescription() {
-        return null;
+        return String.format(getPromotionType().getDisplayFormat(), targetPrice.get());
     }
 }

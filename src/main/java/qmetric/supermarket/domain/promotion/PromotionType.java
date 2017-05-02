@@ -6,13 +6,13 @@ package qmetric.supermarket.domain.promotion;
 public enum PromotionType {
     THREE_FOR_TWO("3 for 2"), TWO_FOR_PRICE("2 for %s");
 
-    private final String name;
+    private final String displayFormat;
 
-    PromotionType(String name) {
-        this.name = name;
+    PromotionType(String displayFormat) {
+        this.displayFormat = displayFormat;
     }
 
     public String getDisplayFormat() {
-        return name;
+        return displayFormat;
     }
 }

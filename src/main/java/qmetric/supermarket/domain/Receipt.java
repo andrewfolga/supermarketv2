@@ -3,6 +3,7 @@ package qmetric.supermarket.domain;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.BiFunction;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -22,6 +23,26 @@ public class Receipt {
         this.subTotal = receiptItems.stream().map(ReceiptItem::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
         this.totalSavings = savings.stream().map(ReceiptItem::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
         this.totalToPay = subTotal.add(totalSavings);
+    }
+
+    public boolean hasReceiptItems(Predicate<List> predicate) {
+        return predicate.test(receiptItems);
+    }
+
+    public boolean hasSavingItems(Predicate<List> predicate) {
+        return predicate.test(savings);
+    }
+
+    public boolean hasSubTotal(Predicate<BigDecimal> predicate) {
+        return predicate.test(subTotal);
+    }
+
+    public boolean hasTotalSavings(Predicate<BigDecimal> predicate) {
+        return predicate.test(totalSavings);
+    }
+
+    public boolean hasTotalToPay(Predicate predicate) {
+        return predicate.test(totalToPay);
     }
 
     public List<String> apply(BiFunction<String, String, String> printingFunction) {

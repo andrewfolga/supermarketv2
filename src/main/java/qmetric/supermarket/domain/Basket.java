@@ -44,7 +44,7 @@ public class Basket {
             promotions.stream().
                 filter(p -> items.containsKey(p.getItemType())).
                 map(p -> new ReceiptItem(
-                        p.geDescription(),
+                        p.getDescription(),
                         p.apply(getItemForType(p.getItemType())).subtract(getItemForType(p.getItemType()).getTotalPrice())
                 )).collect(Collectors.toList()));
 

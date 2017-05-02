@@ -20,9 +20,9 @@ public class Receipt {
     public Receipt(List<ReceiptItem> receiptItems, List<ReceiptItem> savings) {
         this.receiptItems = receiptItems;
         this.savings = savings;
-        this.subTotal = receiptItems.stream().map(ReceiptItem::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
-        this.totalSavings = savings.stream().map(ReceiptItem::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
-        this.totalToPay = subTotal.add(totalSavings);
+        this.subTotal = receiptItems.stream().map(ReceiptItem::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add).setScale(2, BigDecimal.ROUND_HALF_EVEN);
+        this.totalSavings = savings.stream().map(ReceiptItem::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add).setScale(2, BigDecimal.ROUND_HALF_EVEN);
+        this.totalToPay = subTotal.add(totalSavings).setScale(2, BigDecimal.ROUND_HALF_EVEN);
     }
 
     public boolean hasReceiptItems(Predicate<List> predicate) {

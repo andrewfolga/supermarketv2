@@ -19,13 +19,13 @@ public abstract class Promotion implements Function<Item, BigDecimal> {
     private ItemType itemType;
 
     public Promotion(BigDecimal triggerQuantity, Optional<BigDecimal> targetQuantity, Optional<BigDecimal> targetPrice, ItemType itemType) {
-        this.itemType = itemType;
         Validate.notNull(triggerQuantity, "Trigger quantity must be provided");
         Validate.validState(targetQuantity.isPresent() || targetPrice.isPresent(), "Either target quantity or target price must be provided");
         Validate.validState(targetPrice.isPresent() || triggerQuantity.compareTo(targetQuantity.get()) > 0, "Trigger quantity must be greater than target quantity");
         this.triggerQuantity = triggerQuantity;
         this.targetQuantity = targetQuantity;
         this.targetPrice = targetPrice;
+        this.itemType = itemType;
     }
 
     @Override
@@ -58,7 +58,7 @@ public abstract class Promotion implements Function<Item, BigDecimal> {
 
     public abstract PromotionType getPromotionType();
 
-    public String geDescription() {
-        return String.format(getPromotionType().getDisplayFormat(), targetPrice.get());
+    public String getDescription() {
+        return String.format(getPromotionType().getDisplayFormat(), itemType.getName(), targetPrice.orElseGet(() -> BigDecimal.ZERO));
     }
 }

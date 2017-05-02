@@ -1,5 +1,7 @@
 package qmetric.supermarket.domain;
 
+import qmetric.supermarket.domain.promotion.Promotion;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

@@ -1,25 +1,43 @@
 package qmetric.supermarket.domain;
 
 import java.math.BigDecimal;
-import java.util.Map;
+import java.util.*;
+import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 /**
  * Created by andrzejfolga on 02/05/2017.
  */
 public class Receipt {
 
-    private final Map<String, BigDecimal> itemsPrices;
-    private final Map<String, BigDecimal> savings;
+    private final List<ReceiptItem> receiptItems;
+    private final List<ReceiptItem> savings;
     private final BigDecimal subTotal;
     private final BigDecimal totalSavings;
     private final BigDecimal totalToPay;
 
-    public Receipt(Map<String, BigDecimal> itemsPrices, Map<String, BigDecimal> savings) {
-        this.itemsPrices = itemsPrices;
+    public Receipt(List<ReceiptItem> receiptItems, List<ReceiptItem> savings) {
+        this.receiptItems = receiptItems;
         this.savings = savings;
-        this.subTotal = itemsPrices.values().stream().reduce(BigDecimal.ZERO, BigDecimal::add);
-        this.totalSavings = savings.values().stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+        this.subTotal = receiptItems.stream().map(ReceiptItem::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
+        this.totalSavings = savings.stream().map(ReceiptItem::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
         this.totalToPay = subTotal.add(totalSavings);
     }
+
+    public List<String> apply(BiFunction<String, String, String> printingFunction) {
+        List<String> receiptLines = new ArrayList<>();
+        receiptLines.addAll(receiptItems.stream().map(e -> printingFunction.apply(e.getDescription(), e.getPrice().toPlainString())).collect(Collectors.toList()));
+        receiptLines.add(printingFunction.apply("", "-----"));
+        receiptLines.add(printingFunction.apply("Sub-total", subTotal.toPlainString()));
+        receiptLines.add(printingFunction.apply("", ""));
+        receiptLines.add(printingFunction.apply("Savings", ""));
+        receiptLines.addAll(savings.stream().map(e -> printingFunction.apply(e.getDescription(), e.getPrice().toPlainString())).collect(Collectors.toList()));
+        receiptLines.add(printingFunction.apply("", "-----"));
+        receiptLines.add(printingFunction.apply("Total savings", totalSavings.toPlainString()));
+        receiptLines.add(printingFunction.apply("--------------------", "-----"));
+        receiptLines.add(printingFunction.apply("Total to Pay", totalToPay.toPlainString()));
+        return receiptLines;
+    }
+
 
 }

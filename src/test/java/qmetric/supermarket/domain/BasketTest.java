@@ -31,15 +31,15 @@ public class BasketTest {
                 new ThreeForTwoPromotion(BEANS),
                 new TwoForPricePromotion(COKE, new BigDecimal("2.00")));
         basket = buildBasket(
-                new Item(BEANS, new PriceDefinition(new BigDecimal("0.50"), Unit.ITEM), new BigDecimal("1.00")),
-                new Item(BEANS, new PriceDefinition(new BigDecimal("0.50"), Unit.ITEM), new BigDecimal("1.00")),
-                new Item(BEANS, new PriceDefinition(new BigDecimal("0.50"), Unit.ITEM), new BigDecimal("1.00")),
-                new Item(BEANS, new PriceDefinition(new BigDecimal("0.50"), Unit.ITEM), new BigDecimal("1.00")),
-                new Item(COKE, new PriceDefinition(new BigDecimal("1.50"), Unit.ITEM), new BigDecimal("1.00")),
-                new Item(COKE, new PriceDefinition(new BigDecimal("1.50"), Unit.ITEM), new BigDecimal("1.00")),
-                new Item(COKE, new PriceDefinition(new BigDecimal("1.50"), Unit.ITEM), new BigDecimal("1.00")),
-                new Item(COKE, new PriceDefinition(new BigDecimal("1.50"), Unit.ITEM), new BigDecimal("1.00")),
-                new Item(COKE, new PriceDefinition(new BigDecimal("1.50"), Unit.ITEM), new BigDecimal("1.00")),
+                new Item(BEANS, new PriceDefinition(new BigDecimal("0.50"), Unit.ITEM)),
+                new Item(BEANS, new PriceDefinition(new BigDecimal("0.50"), Unit.ITEM)),
+                new Item(BEANS, new PriceDefinition(new BigDecimal("0.50"), Unit.ITEM)),
+                new Item(BEANS, new PriceDefinition(new BigDecimal("0.50"), Unit.ITEM)),
+                new Item(COKE, new PriceDefinition(new BigDecimal("1.50"), Unit.ITEM)),
+                new Item(COKE, new PriceDefinition(new BigDecimal("1.50"), Unit.ITEM)),
+                new Item(COKE, new PriceDefinition(new BigDecimal("1.50"), Unit.ITEM)),
+                new Item(COKE, new PriceDefinition(new BigDecimal("1.50"), Unit.ITEM)),
+                new Item(COKE, new PriceDefinition(new BigDecimal("1.50"), Unit.ITEM)),
                 new Item(ORANGES, new PriceDefinition(new BigDecimal("3.00"), Unit.KG), new BigDecimal("0.50")),
                 new Item(JUICE, new PriceDefinition(new BigDecimal("2.00"), Unit.L), new BigDecimal("0.50")));
     }

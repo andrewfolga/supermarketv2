@@ -19,6 +19,10 @@ public class Item {
         this.quantity = quantity;
     }
 
+    public Item(final ItemType itemType, PriceDefinition priceDefinition) {
+        this(itemType, priceDefinition, new BigDecimal("1.00"));
+    }
+
     public ItemType getItemType() {
         return itemType;
     }

@@ -17,7 +17,7 @@ public class Receipt {
     private final BigDecimal totalSavings;
     private final BigDecimal totalToPay;
 
-    public Receipt(List<ReceiptItem> receiptItems, List<ReceiptItem> savings) {
+    public Receipt(final List<ReceiptItem> receiptItems, final List<ReceiptItem> savings) {
         this.receiptItems = receiptItems;
         this.savings = savings;
         this.subTotal = receiptItems.stream().map(ReceiptItem::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add).setScale(2, BigDecimal.ROUND_HALF_EVEN);
@@ -25,28 +25,28 @@ public class Receipt {
         this.totalToPay = subTotal.add(totalSavings).setScale(2, BigDecimal.ROUND_HALF_EVEN);
     }
 
-    public boolean hasReceiptItems(Predicate<List> predicate) {
+    public boolean hasReceiptItems(final Predicate<List> predicate) {
         return predicate.test(receiptItems);
     }
 
-    public boolean hasSavingItems(Predicate<List> predicate) {
+    public boolean hasSavingItems(final Predicate<List> predicate) {
         return predicate.test(savings);
     }
 
-    public boolean hasSubTotal(Predicate<BigDecimal> predicate) {
+    public boolean hasSubTotal(final Predicate<BigDecimal> predicate) {
         return predicate.test(subTotal);
     }
 
-    public boolean hasTotalSavings(Predicate<BigDecimal> predicate) {
+    public boolean hasTotalSavings(final Predicate<BigDecimal> predicate) {
         return predicate.test(totalSavings);
     }
 
-    public boolean hasTotalToPay(Predicate predicate) {
+    public boolean hasTotalToPay(final Predicate predicate) {
         return predicate.test(totalToPay);
     }
 
-    public List<String> apply(BiFunction<String, String, String> printingFunction) {
-        List<String> receiptLines = new ArrayList<>();
+    public List<String> apply(final BiFunction<String, String, String> printingFunction) {
+        final List<String> receiptLines = new ArrayList<>();
         receiptLines.addAll(receiptItems.stream().
                 map(receiptItem ->
                         printingFunction.apply(

@@ -8,12 +8,12 @@ import java.util.Optional;
 /**
  * Created by andrzejfolga on 01/05/2017.
  */
-public class ThreeForTwoPromotion extends Promotion {
+public class ThreeForTwoPromotion extends AbstractPromotion {
 
     private static final BigDecimal TRIGGER_QUANTITY = new BigDecimal(3);
     private static final BigDecimal TARGET_QUANTITY = new BigDecimal(2);
 
-    public ThreeForTwoPromotion(ItemType itemType) {
+    public ThreeForTwoPromotion(final ItemType itemType) {
         super(TRIGGER_QUANTITY, Optional.of(TARGET_QUANTITY), Optional.empty(), itemType);
     }
 

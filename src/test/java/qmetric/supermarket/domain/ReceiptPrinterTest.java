@@ -14,7 +14,7 @@ import static org.hamcrest.CoreMatchers.is;
  */
 public class ReceiptPrinterTest {
 
-    private ReceiptPrinter receiptPrinter = new ReceiptPrinter();
+    private final ReceiptPrinter receiptPrinter = new ReceiptPrinter();
 
     private static final String BASIC_RECEIPT =
             "Beans                0.50\n" +
@@ -33,7 +33,7 @@ public class ReceiptPrinterTest {
             "Total to Pay         1.40";
 
     @Test
-    public void shouldBuildBasicReceipt() throws Exception {
+    public void shouldBuildBasicReceipt() {
         List<ReceiptItem> itemsPrices = Arrays.asList(
                 new ReceiptItem("Beans", new BigDecimal("0.50")),
                 new ReceiptItem("Beans", new BigDecimal("0.50")),

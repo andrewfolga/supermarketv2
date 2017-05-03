@@ -7,7 +7,7 @@ public class ReceiptItem {
     private final String description;
     private final BigDecimal price;
 
-    public ReceiptItem(String description, BigDecimal price) {
+    public ReceiptItem(final String description, final BigDecimal price) {
         this.description = description;
         this.price = price;
     }
@@ -21,10 +21,14 @@ public class ReceiptItem {
     }
 
     @Override
-    public boolean equals(Object receiptItem) {
-        if (this == receiptItem) return true;
-        if (receiptItem == null || getClass() != receiptItem.getClass()) return false;
-        ReceiptItem that = (ReceiptItem) receiptItem;
+    public boolean equals(final Object receiptItem) {
+        if (this == receiptItem) {
+            return true;
+        }
+        if (receiptItem == null || getClass() != receiptItem.getClass()) {
+            return false;
+        }
+        final ReceiptItem that = (ReceiptItem) receiptItem;
         return Objects.equals(description, that.description) &&
                 Objects.equals(price, that.price);
     }

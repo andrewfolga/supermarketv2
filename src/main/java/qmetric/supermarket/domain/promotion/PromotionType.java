@@ -8,7 +8,7 @@ public enum PromotionType {
 
     private final String displayFormat;
 
-    PromotionType(String displayFormat) {
+    PromotionType(final String displayFormat) {
         this.displayFormat = displayFormat;
     }
 

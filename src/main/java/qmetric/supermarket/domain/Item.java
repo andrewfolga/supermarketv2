@@ -12,7 +12,7 @@ public class Item {
     private final PriceDefinition priceDefinition;
     private final BigDecimal quantity;
 
-    public Item(ItemType itemType, PriceDefinition priceDefinition, BigDecimal quantity) {
+    public Item(final ItemType itemType, final PriceDefinition priceDefinition, final BigDecimal quantity) {
         Validate.validState(quantity.compareTo(BigDecimal.ZERO)>=0, "Quantity has to be positive");
         this.itemType = itemType;
         this.priceDefinition = priceDefinition;

@@ -11,14 +11,14 @@ import java.util.function.Function;
 /**
  * Created by andrzejfolga on 01/05/2017.
  */
-public abstract class Promotion implements Function<Item, BigDecimal> {
+public abstract class AbstractPromotion implements Function<Item, BigDecimal> {
 
     protected final BigDecimal triggerQuantity;
     protected final Optional<BigDecimal> targetQuantity;
     protected final Optional<BigDecimal> targetPrice;
-    private ItemType itemType;
+    private final ItemType itemType;
 
-    public Promotion(BigDecimal triggerQuantity, Optional<BigDecimal> targetQuantity, Optional<BigDecimal> targetPrice, ItemType itemType) {
+    public AbstractPromotion(final BigDecimal triggerQuantity, final Optional<BigDecimal> targetQuantity, final Optional<BigDecimal> targetPrice, final ItemType itemType) {
         Validate.notNull(triggerQuantity, "Trigger quantity must be provided");
         Validate.validState(targetQuantity.isPresent() || targetPrice.isPresent(), "Either target quantity or target price must be provided");
         Validate.validState(targetPrice.isPresent() || triggerQuantity.compareTo(targetQuantity.get()) > 0, "Trigger quantity must be greater than target quantity");
@@ -29,12 +29,12 @@ public abstract class Promotion implements Function<Item, BigDecimal> {
     }
 
     @Override
-    public BigDecimal apply(Item item) {
+    public BigDecimal apply(final Item item) {
         BigDecimal priceToPay = BigDecimal.ZERO;
-        BigDecimal itemQuantity = item.getQuantity();
+        final BigDecimal itemQuantity = item.getQuantity();
         if (item.getItemType().equals(itemType) && itemQuantity.compareTo(triggerQuantity) >= 0) {
-            BigDecimal applyTimes = itemQuantity.divide(triggerQuantity, 0, BigDecimal.ROUND_DOWN);
-            BigDecimal applyReminder = itemQuantity.remainder(triggerQuantity);
+            final BigDecimal applyTimes = itemQuantity.divide(triggerQuantity, 0, BigDecimal.ROUND_DOWN);
+            final BigDecimal applyReminder = itemQuantity.remainder(triggerQuantity);
 
             priceToPay = getPromotionPrice(item).multiply(getPromotionQuantity(item));
 
@@ -48,11 +48,11 @@ public abstract class Promotion implements Function<Item, BigDecimal> {
         return itemType;
     }
 
-    private BigDecimal getPromotionPrice(Item item) {
+    private BigDecimal getPromotionPrice(final Item item) {
         return targetPrice.orElseGet(() -> item.getPriceDefinition().getAmountPerUnit());
     }
 
-    public BigDecimal getPromotionQuantity(Item item) {
+    public BigDecimal getPromotionQuantity(final Item item) {
         return targetQuantity.orElseGet(() -> BigDecimal.ONE);
     }
 

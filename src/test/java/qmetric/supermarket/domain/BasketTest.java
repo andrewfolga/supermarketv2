@@ -1,11 +1,10 @@
 package qmetric.supermarket.domain;
 
 import org.assertj.core.api.JUnitSoftAssertions;
-import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import qmetric.supermarket.domain.promotion.Promotion;
+import qmetric.supermarket.domain.promotion.AbstractPromotion;
 import qmetric.supermarket.domain.promotion.ThreeForTwoPromotion;
 import qmetric.supermarket.domain.promotion.TwoForPricePromotion;
 
@@ -20,25 +19,23 @@ import static qmetric.supermarket.domain.ItemType.*;
  */
 public class BasketTest {
 
-    public static final ArrayList<Promotion> NO_PROMOTIONS = Lists.newArrayList();
-
     @Rule
     public final JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
     private Basket basket = new Basket();
-    List<Promotion> availablePromotions;
+    private List<AbstractPromotion> availablePromotions;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         availablePromotions = buildPromotions(new ThreeForTwoPromotion(BEANS), new TwoForPricePromotion(COKE, new BigDecimal("2.00")));
         basket = buildBasket(
-                new Item(BEANS, new PriceDefinition(new BigDecimal("0.50"), Unit.ITEM), new BigDecimal(4)),
-                new Item(COKE, new PriceDefinition(new BigDecimal("1.50"), Unit.ITEM), new BigDecimal(5)),
-                new Item(ORANGES, new PriceDefinition(new BigDecimal("3.00"), Unit.KG), new BigDecimal(0.5)));
+                new Item(BEANS, new PriceDefinition(new BigDecimal("0.50"), Unit.ITEM), new BigDecimal("4.00")),
+                new Item(COKE, new PriceDefinition(new BigDecimal("1.50"), Unit.ITEM), new BigDecimal("5.00")),
+                new Item(ORANGES, new PriceDefinition(new BigDecimal("3.00"), Unit.KG), new BigDecimal("0.50")));
     }
 
     @Test
-    public void shouldHaveCorrectTotalToPay() throws Exception {
+    public void shouldHaveCorrectTotalToPay() {
 
         Receipt receipt = basket.calculateReceipt(availablePromotions);
 
@@ -46,7 +43,7 @@ public class BasketTest {
     }
 
     @Test
-    public void shouldHaveCorrectSubTotal() throws Exception {
+    public void shouldHaveCorrectSubTotal() {
 
         Receipt receipt = basket.calculateReceipt(availablePromotions);
 
@@ -54,7 +51,7 @@ public class BasketTest {
     }
 
     @Test
-    public void shouldHaveCorrectTotalSavings() throws Exception {
+    public void shouldHaveCorrectTotalSavings() {
 
         Receipt receipt = basket.calculateReceipt(availablePromotions);
 
@@ -62,7 +59,7 @@ public class BasketTest {
     }
 
     @Test
-    public void shouldHaveCorrectReceiptItems() throws Exception {
+    public void shouldHaveCorrectReceiptItems() {
 
         Receipt receipt = basket.calculateReceipt(availablePromotions);
 
@@ -78,7 +75,7 @@ public class BasketTest {
     }
 
     @Test
-    public void shouldHaveCorrectSavingsItems() throws Exception {
+    public void shouldHaveCorrectSavingsItems() {
 
         Receipt receipt = basket.calculateReceipt(availablePromotions);
 
@@ -91,15 +88,15 @@ public class BasketTest {
         });
     }
 
-    private List<Promotion> buildPromotions(Promotion... promotions) {
-        List<Promotion> promotionList = new ArrayList<>();
-        for (Promotion promotion : promotions) {
+    private List<AbstractPromotion> buildPromotions(final AbstractPromotion... promotions) {
+        List<AbstractPromotion> promotionList = new ArrayList<>();
+        for (AbstractPromotion promotion : promotions) {
             promotionList.add(promotion);
         }
         return promotionList;
     }
 
-    private Basket buildBasket(Item... items) {
+    private Basket buildBasket(final Item... items) {
         Basket basket = new Basket();
         for (Item item : items) {
             basket.add(item);

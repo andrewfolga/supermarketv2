@@ -8,7 +8,7 @@ public enum Unit {
 
     private String displayFormat;
 
-    Unit(String displayFormat) {
+    Unit(final String displayFormat) {
         this.displayFormat = displayFormat;
     }
 

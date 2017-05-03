@@ -8,11 +8,11 @@ import java.util.Optional;
 /**
  * Created by andrzejfolga on 01/05/2017.
  */
-public class TwoForPricePromotion extends Promotion {
+public class TwoForPricePromotion extends AbstractPromotion {
 
     private static final BigDecimal TRIGGER_QUANTITY = new BigDecimal(2);
 
-    public TwoForPricePromotion(ItemType itemType, BigDecimal price) {
+    public TwoForPricePromotion(final ItemType itemType, final BigDecimal price) {
         super(TRIGGER_QUANTITY, Optional.empty(), Optional.of(price), itemType);
     }
 

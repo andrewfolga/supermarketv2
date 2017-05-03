@@ -7,12 +7,10 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import qmetric.supermarket.domain.promotion.Promotion;
+import qmetric.supermarket.domain.promotion.AbstractPromotion;
 
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -26,11 +24,11 @@ public class CashierTest {
     public final JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
     @Mock
-    Basket basket;
+    private Basket basket;
     @Mock
-    Receipt receipt;
+    private Receipt receipt;
     @Mock
-    List<Promotion> promotions;
+    private List<AbstractPromotion> promotions;
     @Mock
     private ReceiptPrinter receiptPrinter;
     @Mock
@@ -41,7 +39,7 @@ public class CashierTest {
     private Cashier cashier;
 
     @Test
-    public void shouldProduceReceipt() throws Exception {
+    public void shouldProduceReceipt() {
         String receiptPrintout = "receipt";
         when(promotionRepository.getPromotions()).thenReturn(promotions);
         when(receiptBuilder.build(basket, promotions)).thenReturn(receipt);

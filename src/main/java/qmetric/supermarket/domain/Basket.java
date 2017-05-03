@@ -1,12 +1,12 @@
 package qmetric.supermarket.domain;
 
-import qmetric.supermarket.domain.promotion.Promotion;
+import qmetric.supermarket.domain.promotion.AbstractPromotion;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -15,9 +15,9 @@ import java.util.stream.IntStream;
  */
 public class Basket {
 
-    private final Map<ItemType, Item> items = new HashMap<ItemType, Item>();
+    private final ConcurrentMap<ItemType, Item> items = new ConcurrentHashMap<>();
 
-    public void add(Item item) {
+    public void add(final Item item) {
         items.merge(item.getItemType(), item, (firstItem, secondItem) ->
                 new Item(
                         firstItem.getItemType(),
@@ -25,9 +25,9 @@ public class Basket {
                         firstItem.getQuantity().add(secondItem.getQuantity())));
     }
 
-    public Receipt calculateReceipt(List<Promotion> promotions) {
-        List<ReceiptItem> receiptItems = new ArrayList<>();
-        List<ReceiptItem> savings = new ArrayList<>();
+    public Receipt calculateReceipt(final List<AbstractPromotion> promotions) {
+        final List<ReceiptItem> receiptItems = new ArrayList<>();
+        final List<ReceiptItem> savings = new ArrayList<>();
 
         receiptItems.addAll(
                 items.values().stream().
@@ -56,12 +56,12 @@ public class Basket {
         return new Receipt(receiptItems, savings);
     }
 
-    private BigDecimal getSavings(Promotion promotion) {
+    private BigDecimal getSavings(final AbstractPromotion promotion) {
         return promotion.apply(getItemForType(promotion.getItemType())).
                 subtract(getItemForType(promotion.getItemType()).getTotalPrice());
     }
 
-    private Item getItemForType(ItemType itemType) {
+    private Item getItemForType(final ItemType itemType) {
         return items.get(itemType);
     }
 

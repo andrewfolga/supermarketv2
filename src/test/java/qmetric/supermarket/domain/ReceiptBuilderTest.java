@@ -7,10 +7,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import qmetric.supermarket.domain.promotion.Promotion;
+import qmetric.supermarket.domain.promotion.AbstractPromotion;
 import qmetric.supermarket.domain.promotion.ThreeForTwoPromotion;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockito.Mockito.*;
 import static qmetric.supermarket.domain.ItemType.BEANS;
@@ -21,8 +21,8 @@ import static qmetric.supermarket.domain.ItemType.BEANS;
 @RunWith(MockitoJUnitRunner.class)
 public class ReceiptBuilderTest {
 
-    public static final ArrayList<Promotion> NO_PROMOTIONS = Lists.newArrayList();
-    public static final ArrayList<Promotion> PROMOTIONS = Lists.newArrayList(new ThreeForTwoPromotion(BEANS));
+    public static final List<AbstractPromotion> NO_PROMOTIONS = Lists.newArrayList();
+    public static final List<AbstractPromotion> PROMOTIONS = Lists.newArrayList(new ThreeForTwoPromotion(BEANS));
     @Mock
     private Basket basket;
     @Mock
@@ -31,10 +31,10 @@ public class ReceiptBuilderTest {
     @Rule
     public final JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
-    private ReceiptBuilder receiptBuilder = new ReceiptBuilder();
+    private final ReceiptBuilder receiptBuilder = new ReceiptBuilder();
 
     @Test
-    public void shouldBuildBasicReceipt() throws Exception {
+    public void shouldBuildBasicReceipt() {
         when(basket.calculateReceipt(Lists.newArrayList())).thenReturn(receipt);
 
         Receipt result = receiptBuilder.build(basket, NO_PROMOTIONS);
@@ -45,7 +45,7 @@ public class ReceiptBuilderTest {
     }
 
     @Test
-    public void shouldBuildReceiptWithPromotion() throws Exception {
+    public void shouldBuildReceiptWithPromotion() {
         when(basket.calculateReceipt(PROMOTIONS)).thenReturn(receipt);
 
         Receipt result = receiptBuilder.build(basket, PROMOTIONS);

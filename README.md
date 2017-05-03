@@ -30,7 +30,7 @@ It also tries to extend the design where possible like adding new items/promotio
 
 Assumptions:
 
-- promotion preserves following invariants to make them make sense:
+- promotions preserves following invariants:
     - trigger quantity has to exist,
     - either target quantity or target price has to exist,
     - if target price does not exist then trigger quantity has to be greater than target quantity. 

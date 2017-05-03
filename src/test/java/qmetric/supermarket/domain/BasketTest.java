@@ -2,6 +2,7 @@ package qmetric.supermarket.domain;
 
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.assertj.core.util.Lists;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import qmetric.supermarket.domain.promotion.Promotion;
@@ -25,58 +26,46 @@ public class BasketTest {
     public final JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
     private Basket basket = new Basket();
+    List<Promotion> availablePromotions;
 
-    @Test
-    public void shouldBuildBasicReceipt() throws Exception {
-        Basket basket = buildBasket(
-                new Item(BEANS, new PriceDefinition(new BigDecimal("0.50"), Unit.ITEM), new BigDecimal(3)));
-
-        Receipt receipt = basket.calculateReceipt(NO_PROMOTIONS);
-
-        softly.assertThat(receipt.hasTotalToPay(totalToPay -> totalToPay.equals(new BigDecimal("1.50")))).as("Total to pay").isTrue();
-        softly.assertThat(receipt.hasSubTotal(subTotal -> subTotal.equals(new BigDecimal("1.50")))).as("Sub-total").isTrue();
-        softly.assertThat(receipt.hasTotalSavings(totalSaving -> totalSaving.equals(new BigDecimal("0.00")))).as("Total savings").isTrue();
-        softly.assertThat(receipt.hasReceiptItems(receiptItems -> {
-            ReceiptItem receiptItemBeans = new ReceiptItem("Beans", new BigDecimal("0.50"));
-            return receiptItems.stream().filter(receiptItem -> receiptItem.equals(receiptItemBeans)).count() == 3;
-        })).as("Receipt items").isTrue();
-        softly.assertThat(receipt.hasSavingItems(savingItems -> savingItems.isEmpty())).as("Savings items").isTrue();
-    }
-
-    @Test
-    public void shouldBuildReceiptWithSimplePromotion() throws Exception {
-        List<Promotion> availablePromotions = buildPromotions(new ThreeForTwoPromotion(BEANS));
-        Basket basket = buildBasket(
-                new Item(BEANS, new PriceDefinition(new BigDecimal("0.50"), Unit.ITEM), new BigDecimal(3)));
-
-        Receipt receipt = basket.calculateReceipt(availablePromotions);
-
-        softly.assertThat(receipt.hasTotalToPay(totalToPay -> totalToPay.equals(new BigDecimal("1.00")))).as("Total to pay").isTrue();
-        softly.assertThat(receipt.hasSubTotal(subTotal -> subTotal.equals(new BigDecimal("1.50")))).as("Sub-total").isTrue();
-        softly.assertThat(receipt.hasTotalSavings(totalSaving -> totalSaving.equals(new BigDecimal("-0.50")))).as("Total savings").isTrue();
-        softly.assertThat(receipt.hasReceiptItems(receiptItems -> {
-            ReceiptItem receiptItemBeans = new ReceiptItem("Beans", new BigDecimal("0.50"));
-            return receiptItems.stream().filter(receiptItem -> receiptItem.equals(receiptItemBeans)).count() == 3;
-        })).as("Receipt items").isTrue();
-        softly.assertThat(receipt.hasSavingItems(savingItems -> {
-            ReceiptItem receiptItemBeans = new ReceiptItem("Beans 3 for 2", new BigDecimal("-0.50"));
-            return savingItems.stream().filter(receiptItem -> receiptItem.equals(receiptItemBeans)).count() == 1;
-        })).as("Savings items").isTrue();
-    }
-
-    @Test
-    public void shouldBuildReceiptWithComplexPromotions() throws Exception {
-        List<Promotion> availablePromotions = buildPromotions(new ThreeForTwoPromotion(BEANS), new TwoForPricePromotion(COKE, new BigDecimal("2.00")));
-        Basket basket = buildBasket(
+    @Before
+    public void setUp() throws Exception {
+        availablePromotions = buildPromotions(new ThreeForTwoPromotion(BEANS), new TwoForPricePromotion(COKE, new BigDecimal("2.00")));
+        basket = buildBasket(
                 new Item(BEANS, new PriceDefinition(new BigDecimal("0.50"), Unit.ITEM), new BigDecimal(4)),
                 new Item(COKE, new PriceDefinition(new BigDecimal("1.50"), Unit.ITEM), new BigDecimal(5)),
                 new Item(ORANGES, new PriceDefinition(new BigDecimal("3.00"), Unit.KG), new BigDecimal(0.5)));
+    }
+
+    @Test
+    public void shouldHaveCorrectTotalToPay() throws Exception {
 
         Receipt receipt = basket.calculateReceipt(availablePromotions);
 
         softly.assertThat(receipt.hasTotalToPay(totalToPay -> totalToPay.equals(new BigDecimal("8.50")))).as("Total to pay").isTrue();
+    }
+
+    @Test
+    public void shouldHaveCorrectSubTotal() throws Exception {
+
+        Receipt receipt = basket.calculateReceipt(availablePromotions);
+
         softly.assertThat(receipt.hasSubTotal(subTotal -> subTotal.equals(new BigDecimal("11.00")))).as("Sub-total").isTrue();
+    }
+
+    @Test
+    public void shouldHaveCorrectTotalSavings() throws Exception {
+
+        Receipt receipt = basket.calculateReceipt(availablePromotions);
+
         softly.assertThat(receipt.hasTotalSavings(totalSaving -> totalSaving.equals(new BigDecimal("-2.50")))).as("Total savings").isTrue();
+    }
+
+    @Test
+    public void shouldHaveCorrectReceiptItems() throws Exception {
+
+        Receipt receipt = basket.calculateReceipt(availablePromotions);
+
         receipt.hasReceiptItems(receiptItems -> {
             ReceiptItem receiptItemBeans = new ReceiptItem("Beans", new BigDecimal("0.50"));
             softly.assertThat(receiptItems.stream().filter(receiptItem -> receiptItem.equals(receiptItemBeans)).count() == 4).as("Number of beans receipt items").isTrue();
@@ -86,6 +75,13 @@ public class BasketTest {
             softly.assertThat(receiptItems.stream().filter(receiptItem -> receiptItem.equals(receiptItemOranges)).count() == 1).as("Number of oranges receipt items").isTrue();
             return true;
         });
+    }
+
+    @Test
+    public void shouldHaveCorrectSavingsItems() throws Exception {
+
+        Receipt receipt = basket.calculateReceipt(availablePromotions);
+
         receipt.hasSavingItems(savingItems -> {
             ReceiptItem savingBeans = new ReceiptItem("Beans 3 for 2", new BigDecimal("-0.50"));
             softly.assertThat(savingItems.stream().filter(receiptItem -> receiptItem.equals(savingBeans)).count() == 1).as("Number of beans savings items").isTrue();

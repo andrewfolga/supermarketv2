@@ -15,10 +15,10 @@ There is currently one promotions repository port wiht no adapter and no seconda
 
 Future possible ports/adapters:
  
- - Primary
+- Primary
     - database adapter for persisting promotions
     - database port and adapter for persisting baskets
- - Secondary
+- Secondary
     - http port and adapter for comms with the domain (_see future REST resources below_)
 
 Design Notes
@@ -29,10 +29,11 @@ The code follows SOLID and tell don't ask methodologies with strong push towards
 It also tries to extend the design where possible like adding new items/promotions without disrupting other classes.
 
 Assumptions:
- - promotion preserves following invariants to make them make sense:
-  - trigger quantity has to exist,
-  - either target quantity or target price has to exist,
-  - if target price does not exist then trigger quantity has to be greater than target quantity. 
+
+- promotion preserves following invariants to make them make sense:
+    - trigger quantity has to exist,
+    - either target quantity or target price has to exist,
+    - if target price does not exist then trigger quantity has to be greater than target quantity. 
 
 Proposed future REST resources and uris
 =======================================

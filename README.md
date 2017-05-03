@@ -1,10 +1,28 @@
 Overview
 ========
 
-The design uses the onion approach. At the heart of the domain is the Cashier who processes the given basket and produces the final receipt.
+The design uses the ports and adapters (AKA hexagonal) architectural pattern.
+
+Domain
+------
+
+At the heart of the domain is the Cashier who processes the given basket and produces the final receipt. The promotions logic lends itself to easy extension.
+
+Ports/Adapters:
+---------------
+
+There is currently one promotions repository port wiht no adapter and no secondary ports yet.
+
+Future possible ports/adapters:
+ 
+ - Primary
+    - database adapter for persisting promotions
+    - database port and adapter for persisting baskets
+ - Secondary
+    - http port and adapter for comms with the domain (_see future REST resources below_)
 
 Proposed future REST resources and uris
-=================================
+=======================================
 
 Create basket
 -------------

@@ -1,6 +1,7 @@
 package qmetric.supermarket.domain;
 
 import qmetric.supermarket.domain.promotion.AbstractPromotion;
+import qmetric.supermarket.ports.primary.PromotionRepositoryPort;
 
 import java.util.List;
 
@@ -9,11 +10,11 @@ import java.util.List;
  */
 public class Cashier {
 
-    private final PromotionRepository promoRepository;
+    private final PromotionRepositoryPort promoRepository;
     private final ReceiptBuilder receiptBuilder;
     private final ReceiptPrinter receiptPrinter;
 
-    public Cashier(final PromotionRepository promoRepository, final ReceiptBuilder receiptBuilder, final ReceiptPrinter receiptPrinter) {
+    public Cashier(final PromotionRepositoryPort promoRepository, final ReceiptBuilder receiptBuilder, final ReceiptPrinter receiptPrinter) {
         this.promoRepository = promoRepository;
         this.receiptBuilder = receiptBuilder;
         this.receiptPrinter = receiptPrinter;

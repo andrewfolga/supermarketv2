@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import qmetric.supermarket.domain.promotion.AbstractPromotion;
+import qmetric.supermarket.ports.primary.PromotionRepositoryPort;
 
 import java.util.List;
 
@@ -34,20 +35,20 @@ public class CashierTest {
     @Mock
     private ReceiptBuilder receiptBuilder;
     @Mock
-    private PromotionRepository promotionRepository;
+    private PromotionRepositoryPort promotionRepositoryPort;
     @InjectMocks
     private Cashier cashier;
 
     @Test
     public void shouldProduceReceipt() {
         String receiptPrintout = "receipt";
-        when(promotionRepository.getPromotions()).thenReturn(promotions);
+        when(promotionRepositoryPort.getPromotions()).thenReturn(promotions);
         when(receiptBuilder.build(basket, promotions)).thenReturn(receipt);
         when(receiptPrinter.print(receipt)).thenReturn(receiptPrintout);
 
         String result = cashier.process(basket);
 
-        verify(promotionRepository).getPromotions();
+        verify(promotionRepositoryPort).getPromotions();
         verify(receiptBuilder).build(basket, promotions);
         verify(receiptPrinter).print(receipt);
         softly.assertThat(result).as("Result printout").isEqualTo(receiptPrintout);

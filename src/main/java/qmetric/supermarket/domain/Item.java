@@ -13,7 +13,7 @@ public class Item {
     private final BigDecimal quantity;
 
     public Item(final ItemType itemType, final PriceDefinition priceDefinition, final BigDecimal quantity) {
-        Validate.validState(quantity.compareTo(BigDecimal.ZERO)>=0, "Quantity has to be positive");
+        Validate.validState(quantity.compareTo(BigDecimal.ZERO) >= 0, "Quantity has to be positive");
         this.itemType = itemType;
         this.priceDefinition = priceDefinition;
         this.quantity = quantity;
@@ -37,10 +37,6 @@ public class Item {
 
     public BigDecimal getTotalPrice() {
         return priceDefinition.getAmountPerUnit().multiply(quantity).setScale(2, BigDecimal.ROUND_HALF_EVEN);
-    }
-
-    public BigDecimal getAmountPerUnit() {
-        return priceDefinition.getAmountPerUnit();
     }
 
     public String getDescription() {

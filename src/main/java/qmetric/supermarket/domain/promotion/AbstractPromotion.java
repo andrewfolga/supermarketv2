@@ -32,7 +32,7 @@ public abstract class AbstractPromotion implements Function<Item, BigDecimal> {
     public BigDecimal apply(final Item item) {
         BigDecimal priceToPay = BigDecimal.ZERO;
         final BigDecimal itemQuantity = item.getQuantity();
-        if (item.getItemType().equals(itemType) && itemQuantity.compareTo(triggerQuantity) >= 0) {
+        if (item.getItemType().equals(itemType)) {
             final BigDecimal applyTimes = itemQuantity.divide(triggerQuantity, 0, BigDecimal.ROUND_DOWN);
             final BigDecimal applyReminder = itemQuantity.remainder(triggerQuantity);
 

@@ -57,8 +57,8 @@ public class Basket {
     }
 
     private BigDecimal getSavings(final AbstractPromotion promotion) {
-        return promotion.apply(getItemForType(promotion.getItemType())).
-                subtract(getItemForType(promotion.getItemType()).getTotalPrice());
+        Item item = getItemForType(promotion.getItemType());
+        return promotion.apply(item).subtract(item.getTotalPrice());
     }
 
     private Item getItemForType(final ItemType itemType) {

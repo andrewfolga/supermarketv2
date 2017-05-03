@@ -46,7 +46,7 @@ public class ReceiptBuilderTest {
     }
 
     @Test
-    public void shouldBuildReceiptWithBasicPromotions() throws Exception {
+    public void shouldBuildReceiptWithSimplePromotion() throws Exception {
         ThreeForTwoPromotion threeForTwoPromotion = new ThreeForTwoPromotion(BEANS);
         List<Promotion> availablePromotions = Arrays.asList(threeForTwoPromotion);
         Basket basket = new Basket();

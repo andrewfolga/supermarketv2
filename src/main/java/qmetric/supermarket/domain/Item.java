@@ -1,5 +1,7 @@
 package qmetric.supermarket.domain;
 
+import org.apache.commons.lang3.Validate;
+
 import java.math.BigDecimal;
 
 /**
@@ -11,6 +13,7 @@ public class Item {
     private final BigDecimal quantity;
 
     public Item(ItemType itemType, PriceDefinition priceDefinition, BigDecimal quantity) {
+        Validate.validState(quantity.compareTo(BigDecimal.ZERO)>=0, "Quantity has to be positive");
         this.itemType = itemType;
         this.priceDefinition = priceDefinition;
         this.quantity = quantity;

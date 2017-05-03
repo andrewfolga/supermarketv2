@@ -1,6 +1,8 @@
 package qmetric.supermarket.domain;
 
-import qmetric.supermarket.domain.promotion.AbstractPromotion;
+import qmetric.supermarket.domain.promotion.Promotion;
+import qmetric.supermarket.domain.promotion.PromotionFunction;
+import qmetric.supermarket.domain.promotion.PromotionFunctionBuilder;
 
 import java.util.List;
 
@@ -9,8 +11,15 @@ import java.util.List;
  */
 public class ReceiptBuilder {
 
-    public Receipt build(final Basket basket, final List<AbstractPromotion> promotions) {
-        return basket.calculateReceipt(promotions);
+    private PromotionFunctionBuilder promotionFunctionBuilder;
+
+    public ReceiptBuilder(PromotionFunctionBuilder promotionFunctionBuilder) {
+        this.promotionFunctionBuilder = promotionFunctionBuilder;
+    }
+
+    public Receipt build(final Basket basket, final List<Promotion> promotions) {
+        List<PromotionFunction> promotionFunctions = promotionFunctionBuilder.build(promotions);
+        return basket.calculateReceipt(promotionFunctions);
     }
 
 }

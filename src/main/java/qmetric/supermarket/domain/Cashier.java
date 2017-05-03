@@ -1,6 +1,6 @@
 package qmetric.supermarket.domain;
 
-import qmetric.supermarket.domain.promotion.AbstractPromotion;
+import qmetric.supermarket.domain.promotion.Promotion;
 import qmetric.supermarket.ports.primary.PromotionRepositoryPort;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public class Cashier {
     }
 
     public String process(final Basket basket) {
-        final List<AbstractPromotion> promotions = promoRepository.getPromotions();
+        final List<Promotion> promotions = promoRepository.getPromotions();
         final Receipt receipt = receiptBuilder.build(basket, promotions);
         return receiptPrinter.print(receipt);
     }

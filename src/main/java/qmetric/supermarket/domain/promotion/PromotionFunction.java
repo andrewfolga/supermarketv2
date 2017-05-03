@@ -1,6 +1,5 @@
 package qmetric.supermarket.domain.promotion;
 
-import org.apache.commons.lang3.Validate;
 import qmetric.supermarket.domain.Item;
 import qmetric.supermarket.domain.ItemType;
 
@@ -9,27 +8,26 @@ import java.util.Optional;
 import java.util.function.Function;
 
 /**
- * Created by andrzejfolga on 01/05/2017.
+ * Created by andrzejfolga on 03/05/2017.
  */
-public abstract class AbstractPromotion implements Function<Item, BigDecimal> {
+public class PromotionFunction implements Function<Item, BigDecimal> {
 
     protected final BigDecimal triggerQuantity;
     protected final Optional<BigDecimal> targetQuantity;
     protected final Optional<BigDecimal> targetPrice;
     private final ItemType itemType;
+    private final PromotionType promotionType;
 
-    public AbstractPromotion(final BigDecimal triggerQuantity, final Optional<BigDecimal> targetQuantity, final Optional<BigDecimal> targetPrice, final ItemType itemType) {
-        Validate.notNull(triggerQuantity, "Trigger quantity must be provided");
-        Validate.validState(targetQuantity.isPresent() || targetPrice.isPresent(), "Either target quantity or target price must be provided");
-        Validate.validState(targetPrice.isPresent() || triggerQuantity.compareTo(targetQuantity.get()) > 0, "Trigger quantity must be greater than target quantity");
-        this.triggerQuantity = triggerQuantity;
-        this.targetQuantity = targetQuantity;
-        this.targetPrice = targetPrice;
-        this.itemType = itemType;
+    public PromotionFunction(Promotion promotion) {
+        this.triggerQuantity = promotion.getTriggerQuantity();
+        this.targetQuantity = promotion.getTargetQuantity();
+        this.targetPrice = promotion.getTargetPrice();
+        this.itemType = promotion.getItemType();
+        this.promotionType = promotion.getPromotionType();
     }
 
     @Override
-    public BigDecimal apply(final Item item) {
+    public BigDecimal apply(Item item) {
         BigDecimal priceToPay = BigDecimal.ZERO;
         final BigDecimal itemQuantity = item.getQuantity();
         if (item.getItemType().equals(itemType)) {
@@ -44,21 +42,19 @@ public abstract class AbstractPromotion implements Function<Item, BigDecimal> {
         return priceToPay.setScale(2, BigDecimal.ROUND_HALF_EVEN);
     }
 
-    public ItemType getItemType() {
-        return itemType;
-    }
-
     private BigDecimal getPromotionPrice(final Item item) {
         return targetPrice.orElseGet(() -> item.getPriceDefinition().getAmountPerUnit());
     }
 
-    public BigDecimal getPromotionQuantity(final Item item) {
+    public ItemType getItemType() {
+        return itemType;
+    }
+
+    private BigDecimal getPromotionQuantity(final Item item) {
         return targetQuantity.orElseGet(() -> BigDecimal.ONE);
     }
 
-    public abstract PromotionType getPromotionType();
-
     public String getDescription() {
-        return String.format(getPromotionType().getDisplayFormat(), itemType.getName(), targetPrice.orElseGet(() -> BigDecimal.ZERO));
+        return String.format(promotionType.getDisplayFormat(), itemType.getName(), targetPrice.orElseGet(() -> BigDecimal.ZERO));
     }
 }

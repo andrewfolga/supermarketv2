@@ -7,7 +7,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import qmetric.supermarket.domain.promotion.AbstractPromotion;
+import qmetric.supermarket.domain.promotion.Promotion;
 import qmetric.supermarket.ports.primary.PromotionRepositoryPort;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class CashierTest {
     @Mock
     private Receipt receipt;
     @Mock
-    private List<AbstractPromotion> promotions;
+    private List<Promotion> promotions;
     @Mock
     private ReceiptPrinter receiptPrinter;
     @Mock

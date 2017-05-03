@@ -1,6 +1,6 @@
 package qmetric.supermarket.ports.primary;
 
-import qmetric.supermarket.domain.promotion.AbstractPromotion;
+import qmetric.supermarket.domain.promotion.Promotion;
 
 import java.util.List;
 
@@ -9,6 +9,6 @@ import java.util.List;
  */
 public interface PromotionRepositoryPort {
 
-    List<AbstractPromotion> getPromotions();
+    List<Promotion> getPromotions();
 
 }

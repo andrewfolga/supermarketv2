@@ -14,7 +14,7 @@ import java.util.Optional;
 /**
  * Created by andrzejfolga on 02/05/2017.
  */
-public class AbstractPromotionTest {
+public class PromotionFunctionTest {
 
     public static final String TOTAL_TO_PAY = "Total to Pay";
     @Rule
@@ -31,22 +31,22 @@ public class AbstractPromotionTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldNotApplyPromotionIfTriggerQuantityNotProvided() {
-        buildPromotion(null, TARGET_QUANTITY_2, TARGET_PRICE_EMPTY, ItemType.BEANS);
+        buildPromotionFunction(null, TARGET_QUANTITY_2, TARGET_PRICE_EMPTY, ItemType.BEANS, PromotionType.TWO_FOR_PRICE);
     }
 
     @Test(expected = IllegalStateException.class)
     public void shouldNotApplyPromotionIfTargetQuantityLowerThanTriggerQuantity() {
-        buildPromotion(TRIGGER_QUANTITY_3, TARGET_QUANTITY_3, TARGET_PRICE_EMPTY, ItemType.BEANS);
+        buildPromotionFunction(TRIGGER_QUANTITY_3, TARGET_QUANTITY_3, TARGET_PRICE_EMPTY, ItemType.BEANS, PromotionType.THREE_FOR_TWO);
     }
 
     @Test(expected = IllegalStateException.class)
     public void shouldNotApplyPromotionIfTriggerQuantityProvidedAndNeitherTargetQuantityNorTargetPrice() {
-        buildPromotion(TRIGGER_QUANTITY_3, TARGET_QUANTITY_EMPTY, TARGET_PRICE_EMPTY, ItemType.BEANS);
+        buildPromotionFunction(TRIGGER_QUANTITY_3, TARGET_QUANTITY_EMPTY, TARGET_PRICE_EMPTY, ItemType.BEANS, PromotionType.THREE_FOR_TWO);
     }
 
     @Test
     public void shouldNotApply3For2PromotionForDifferentItemType() {
-        AbstractPromotion promotion = buildPromotion(TRIGGER_QUANTITY_3, TARGET_QUANTITY_2, TARGET_PRICE_EMPTY, ItemType.BEANS);
+        PromotionFunction promotion = buildPromotionFunction(TRIGGER_QUANTITY_3, TARGET_QUANTITY_2, TARGET_PRICE_EMPTY, ItemType.BEANS, PromotionType.THREE_FOR_TWO);
         Item item = new Item(ItemType.COKE, new PriceDefinition(new BigDecimal("2.00"), Unit.ITEM), new BigDecimal("5.00"));
 
         BigDecimal totalToPay = promotion.apply(item);
@@ -56,7 +56,7 @@ public class AbstractPromotionTest {
 
     @Test
     public void shouldApply3For2Promotion() {
-        AbstractPromotion promotion = buildPromotion(TRIGGER_QUANTITY_3, TARGET_QUANTITY_2, TARGET_PRICE_EMPTY, ItemType.BEANS);
+        PromotionFunction promotion = buildPromotionFunction(TRIGGER_QUANTITY_3, TARGET_QUANTITY_2, TARGET_PRICE_EMPTY, ItemType.BEANS, PromotionType.THREE_FOR_TWO);
         Item item = new Item(ItemType.BEANS, new PriceDefinition(new BigDecimal("2.00"), Unit.ITEM), new BigDecimal("5.00"));
 
         BigDecimal totalToPay = promotion.apply(item);
@@ -66,7 +66,7 @@ public class AbstractPromotionTest {
 
     @Test
     public void shouldApply2ForPricePromotion() {
-        AbstractPromotion promotion = buildPromotion(TRIGGER_QUANTITY_2, TARGET_QUANTITY_EMPTY, TARGET_PRICE_1, ItemType.COKE);
+        PromotionFunction promotion = buildPromotionFunction(TRIGGER_QUANTITY_2, TARGET_QUANTITY_EMPTY, TARGET_PRICE_1, ItemType.COKE, PromotionType.TWO_FOR_PRICE);
         Item item = new Item(ItemType.COKE, new PriceDefinition(new BigDecimal("1.00"), Unit.ITEM), new BigDecimal("4.0"));
 
         BigDecimal totalToPay = promotion.apply(item);
@@ -76,7 +76,7 @@ public class AbstractPromotionTest {
 
     @Test
     public void shouldApply4For3Promotion() {
-        AbstractPromotion promotion = buildPromotion(TRIGGER_QUANTITY_4, TARGET_QUANTITY_3, TARGET_PRICE_EMPTY, ItemType.ORANGES);
+        PromotionFunction promotion = buildPromotionFunction(TRIGGER_QUANTITY_4, TARGET_QUANTITY_3, TARGET_PRICE_EMPTY, ItemType.ORANGES, PromotionType.TWO_FOR_PRICE);
         Item item = new Item(ItemType.ORANGES, new PriceDefinition(new BigDecimal("1.00"), Unit.ITEM), new BigDecimal("6.0"));
 
         BigDecimal totalToPay = promotion.apply(item);
@@ -84,13 +84,8 @@ public class AbstractPromotionTest {
         softly.assertThat(totalToPay).as(TOTAL_TO_PAY).isEqualTo(new BigDecimal("5.00"));
     }
 
-    private AbstractPromotion buildPromotion(final BigDecimal triggerQuantity, final Optional<BigDecimal> targetQuantity, final Optional<BigDecimal> targetPrice, final ItemType itemType) {
-        return new AbstractPromotion(triggerQuantity, targetQuantity, targetPrice, itemType) {
-            @Override
-            public PromotionType getPromotionType() {
-                return null;
-            }
-        };
+    private PromotionFunction buildPromotionFunction(final BigDecimal triggerQuantity, final Optional<BigDecimal> targetQuantity, final Optional<BigDecimal> targetPrice, final ItemType itemType, final PromotionType promotionType) {
+        return new PromotionFunction(new Promotion(triggerQuantity, targetQuantity, targetPrice, itemType, promotionType));
     }
 
 }

@@ -4,9 +4,9 @@ import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import qmetric.supermarket.domain.promotion.AbstractPromotion;
-import qmetric.supermarket.domain.promotion.ThreeForTwoPromotion;
-import qmetric.supermarket.domain.promotion.TwoForPricePromotion;
+import qmetric.supermarket.domain.promotion.Promotion;
+import qmetric.supermarket.domain.promotion.PromotionFunction;
+import qmetric.supermarket.domain.promotion.PromotionType;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -23,13 +23,13 @@ public class BasketTest {
     public final JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
     private Basket basket = new Basket();
-    private List<AbstractPromotion> availablePromotions;
+    private List<PromotionFunction> availablePromotions;
 
     @Before
     public void setUp() {
-        availablePromotions = buildPromotions(
-                new ThreeForTwoPromotion(BEANS),
-                new TwoForPricePromotion(COKE, new BigDecimal("2.00")));
+        availablePromotions = buildPromotionFunctions(
+                new PromotionFunction(Promotion.quantityForQuantity(new BigDecimal("3.00"), new BigDecimal("2.00"), BEANS, PromotionType.THREE_FOR_TWO)),
+                new PromotionFunction(Promotion.quantityForPrice(new BigDecimal("2.00"), new BigDecimal("2.00"), COKE, PromotionType.TWO_FOR_PRICE)));
         basket = buildBasket(
                 new Item(BEANS, new PriceDefinition(new BigDecimal("0.50"), Unit.ITEM)),
                 new Item(BEANS, new PriceDefinition(new BigDecimal("0.50"), Unit.ITEM)),
@@ -98,12 +98,12 @@ public class BasketTest {
         });
     }
 
-    private List<AbstractPromotion> buildPromotions(final AbstractPromotion... promotions) {
-        List<AbstractPromotion> promotionList = new ArrayList<>();
-        for (AbstractPromotion promotion : promotions) {
-            promotionList.add(promotion);
+    private List<PromotionFunction> buildPromotionFunctions(final PromotionFunction... promotionFunctions) {
+        List<PromotionFunction> promotionFunctionList = new ArrayList<>();
+        for (PromotionFunction promotionFunction : promotionFunctions) {
+            promotionFunctionList.add(promotionFunction);
         }
-        return promotionList;
+        return promotionFunctionList;
     }
 
     private Basket buildBasket(final Item... items) {

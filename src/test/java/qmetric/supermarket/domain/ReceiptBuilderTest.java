@@ -1,4 +1,4 @@
-package qmetric.domain;
+package qmetric.supermarket.domain;
 
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.assertj.core.util.Lists;
@@ -7,9 +7,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import qmetric.supermarket.domain.Basket;
-import qmetric.supermarket.domain.Receipt;
-import qmetric.supermarket.domain.ReceiptBuilder;
 import qmetric.supermarket.domain.promotion.Promotion;
 import qmetric.supermarket.domain.promotion.ThreeForTwoPromotion;
 

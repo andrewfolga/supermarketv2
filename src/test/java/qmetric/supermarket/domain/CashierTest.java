@@ -1,4 +1,4 @@
-package qmetric.domain;
+package qmetric.supermarket.domain;
 
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Rule;
@@ -7,12 +7,10 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import qmetric.supermarket.domain.*;
 import qmetric.supermarket.domain.promotion.Promotion;
 
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;

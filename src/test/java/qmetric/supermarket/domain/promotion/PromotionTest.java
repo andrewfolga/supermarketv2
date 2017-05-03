@@ -1,4 +1,4 @@
-package qmetric.domain.promotion;
+package qmetric.supermarket.domain.promotion;
 
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Rule;
@@ -7,13 +7,10 @@ import qmetric.supermarket.domain.Item;
 import qmetric.supermarket.domain.ItemType;
 import qmetric.supermarket.domain.PriceDefinition;
 import qmetric.supermarket.domain.Unit;
-import qmetric.supermarket.domain.promotion.Promotion;
-import qmetric.supermarket.domain.promotion.PromotionType;
 
 import java.math.BigDecimal;
 import java.util.Optional;
 
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 

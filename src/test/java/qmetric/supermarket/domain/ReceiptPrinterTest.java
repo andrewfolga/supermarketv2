@@ -1,23 +1,13 @@
-package qmetric.domain;
+package qmetric.supermarket.domain;
 
 import org.junit.Assert;
 import org.junit.Test;
-import qmetric.supermarket.domain.Receipt;
-import qmetric.supermarket.domain.ReceiptItem;
-import qmetric.supermarket.domain.ReceiptPrinter;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
 
-import static java.util.Collections.unmodifiableMap;
-import static java.util.Collections.unmodifiableSortedMap;
-import static java.util.stream.Stream.of;
 import static org.hamcrest.CoreMatchers.is;
-import static qmetric.supermarket.util.Util.entriesToMap;
-import static qmetric.supermarket.util.Util.entry;
 
 /**
  * Created by andrzejfolga on 02/05/2017.

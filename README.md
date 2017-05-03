@@ -28,7 +28,11 @@ The code follows SOLID and tell don't ask methodologies with strong push towards
 
 It also tries to extend the design where possible like adding new items/promotions without disrupting other classes.
 
-It preserves invariant like in promotions where trigger quantity has to exist or either targetQuantity or targetPrice has to exist.
+Assumptions:
+ - promotion preserves following invariants to make them make sense:
+  - trigger quantity has to exist,
+  - either target quantity or target price has to exist,
+  - if target price does not exist then trigger quantity has to be greater than target quantity. 
 
 Proposed future REST resources and uris
 =======================================

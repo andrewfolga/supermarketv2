@@ -24,9 +24,11 @@ Future possible ports/adapters:
 Design Notes
 ------------
 
-The code follows SOLID and tell don't ask methodologies.
+The code follows SOLID and tell don't ask methodologies with strong push towards immutability.
 
-It also tries to extend the design where possible like adding new items/promotions without disrupting other classes. 
+It also tries to extend the design where possible like adding new items/promotions without disrupting other classes.
+
+It preserves invariant like in promotions where trigger quantity has to exist or either targetQuantity or targetPrice has to exist.
 
 Proposed future REST resources and uris
 =======================================
@@ -39,7 +41,7 @@ Create basket
 POST /baskets
 ```
 
-##### Example: Create basket
+##### Example : Create basket
 
 
 **Request url**
@@ -382,6 +384,30 @@ POST /promotions
 |Status Code |Description                                                     |
 |------------|----------------------------------------------------------------|
 |201         | Created promotion 2                                            |
+
+##### Example 3: Fail to create promotion due to missing triggerQuantity
+
+
+**Request url**
+```
+POST /promotions
+```
+
+*Request Body*
+
+    {
+        "targetPrice" : "1.00",
+        "itemType" : "COKE"
+        "promotionType" : "TWO_FOR_PRICE"
+    }
+
+*No Response Body:*
+
+*No Response Headers:*
+
+|Status Code |Description                                                     |
+|------------|----------------------------------------------------------------|
+|400         | Wrong input data: missing trigger quantity                     |
 
 
 Update property of promotion

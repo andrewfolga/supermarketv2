@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
  */
 public class Basket {
 
-    private static final String KEY = "%s-%s";
     private final List<Item> items = new ArrayList<>();
 
     public void add(final Item item) {

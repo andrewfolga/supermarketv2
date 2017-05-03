@@ -10,8 +10,8 @@ import java.util.Optional;
  */
 public class ThreeForTwoPromotion extends AbstractPromotion {
 
-    private static final BigDecimal TRIGGER_QUANTITY = new BigDecimal(3);
-    private static final BigDecimal TARGET_QUANTITY = new BigDecimal(2);
+    private static final BigDecimal TRIGGER_QUANTITY = new BigDecimal("3.00");
+    private static final BigDecimal TARGET_QUANTITY = new BigDecimal("2.00");
 
     public ThreeForTwoPromotion(final ItemType itemType) {
         super(TRIGGER_QUANTITY, Optional.of(TARGET_QUANTITY), Optional.empty(), itemType);

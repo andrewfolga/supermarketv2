@@ -10,7 +10,7 @@ import java.util.Optional;
  */
 public class TwoForPricePromotion extends AbstractPromotion {
 
-    private static final BigDecimal TRIGGER_QUANTITY = new BigDecimal(2);
+    private static final BigDecimal TRIGGER_QUANTITY = new BigDecimal("2.00");
 
     public TwoForPricePromotion(final ItemType itemType, final BigDecimal price) {
         super(TRIGGER_QUANTITY, Optional.empty(), Optional.of(price), itemType);

@@ -21,10 +21,10 @@ public class ReceiptItem {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ReceiptItem that = (ReceiptItem) o;
+    public boolean equals(Object receiptItem) {
+        if (this == receiptItem) return true;
+        if (receiptItem == null || getClass() != receiptItem.getClass()) return false;
+        ReceiptItem that = (ReceiptItem) receiptItem;
         return Objects.equals(description, that.description) &&
                 Objects.equals(price, that.price);
     }

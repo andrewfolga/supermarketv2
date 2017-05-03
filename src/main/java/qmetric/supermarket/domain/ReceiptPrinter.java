@@ -11,8 +11,8 @@ public class ReceiptPrinter {
     public static final String TEMPLATE = "%1$-20s%2$5s";
 
     public String print(Receipt receipt) {
-        List<String> printableReceiptLines = receipt.apply((String desc, String price) -> String.format(TEMPLATE, desc, price));
-        String printableReceipt = printableReceiptLines.stream().collect(Collectors.joining("\n"));
+        List<String> receiptLines = receipt.apply((String desc, String price) -> String.format(TEMPLATE, desc, price));
+        String printableReceipt = receiptLines.stream().collect(Collectors.joining("\n"));
         return printableReceipt;
     }
 

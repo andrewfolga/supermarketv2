@@ -1,5 +1,7 @@
 package qmetric.domain.promotion;
 
+import org.assertj.core.api.JUnitSoftAssertions;
+import org.junit.Rule;
 import org.junit.Test;
 import qmetric.supermarket.domain.Item;
 import qmetric.supermarket.domain.ItemType;
@@ -19,6 +21,9 @@ import static org.junit.Assert.assertThat;
  * Created by andrzejfolga on 02/05/2017.
  */
 public class PromotionTest {
+
+    @Rule
+    public final JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
     private static final BigDecimal TRIGGER_QUANTITY_2 = new BigDecimal("2.0");
     private static final BigDecimal TRIGGER_QUANTITY_3 = new BigDecimal("3.0");
@@ -51,7 +56,7 @@ public class PromotionTest {
 
         BigDecimal totalToPay = promotion.apply(item);
 
-        assertThat(totalToPay, is(equalTo(BigDecimal.ZERO.setScale(2))));
+        softly.assertThat(totalToPay).as("Total to Pay").isEqualTo(BigDecimal.ZERO.setScale(2));
     }
 
     @Test
@@ -61,7 +66,7 @@ public class PromotionTest {
 
         BigDecimal totalToPay = promotion.apply(item);
 
-        assertThat(totalToPay, is(equalTo(new BigDecimal("8.00"))));
+        softly.assertThat(totalToPay).as("Total to Pay").isEqualTo(new BigDecimal("8.00"));
     }
 
     @Test
@@ -71,7 +76,7 @@ public class PromotionTest {
 
         BigDecimal totalToPay = promotion.apply(item);
 
-        assertThat(totalToPay, is(equalTo(new BigDecimal("2.00"))));
+        softly.assertThat(totalToPay).as("Total to Pay").isEqualTo(new BigDecimal("2.00"));
     }
 
     @Test
@@ -81,7 +86,7 @@ public class PromotionTest {
 
         BigDecimal totalToPay = promotion.apply(item);
 
-        assertThat(totalToPay, is(equalTo(new BigDecimal("5.00"))));
+        softly.assertThat(totalToPay).as("Total to Pay").isEqualTo(new BigDecimal("5.00"));
     }
 
     private Promotion buildPromotion(BigDecimal triggerQuantity, Optional<BigDecimal> targetQuantity, Optional<BigDecimal> targetPrice, ItemType itemType) {

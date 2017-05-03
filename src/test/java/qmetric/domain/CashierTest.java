@@ -1,5 +1,7 @@
 package qmetric.domain;
 
+import org.assertj.core.api.JUnitSoftAssertions;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -21,6 +23,9 @@ import static org.mockito.Mockito.when;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class CashierTest {
+
+    @Rule
+    public final JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
     @Mock
     Basket basket;
@@ -49,6 +54,6 @@ public class CashierTest {
         verify(promotionRepository).getPromotions();
         verify(receiptBuilder).build(basket, promotions);
         verify(receiptPrinter).print(receipt);
-        assertThat(result, is(equalTo(receiptPrintout)));
+        softly.assertThat(result).as("Result printout").isEqualTo(receiptPrintout);
     }
 }

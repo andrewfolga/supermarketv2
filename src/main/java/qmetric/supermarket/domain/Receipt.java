@@ -47,12 +47,22 @@ public class Receipt {
 
     public List<String> apply(BiFunction<String, String, String> printingFunction) {
         List<String> receiptLines = new ArrayList<>();
-        receiptLines.addAll(receiptItems.stream().map(e -> printingFunction.apply(e.getDescription(), e.getPrice().toPlainString())).collect(Collectors.toList()));
+        receiptLines.addAll(receiptItems.stream().
+                map(receiptItem ->
+                        printingFunction.apply(
+                                receiptItem.getDescription(),
+                                receiptItem.getPrice().toPlainString())).
+                collect(Collectors.toList()));
         receiptLines.add(printingFunction.apply("", "-----"));
         receiptLines.add(printingFunction.apply("Sub-total", subTotal.toPlainString()));
         receiptLines.add(printingFunction.apply("", ""));
         receiptLines.add(printingFunction.apply("Savings", ""));
-        receiptLines.addAll(savings.stream().map(e -> printingFunction.apply(e.getDescription(), e.getPrice().toPlainString())).collect(Collectors.toList()));
+        receiptLines.addAll(savings.stream().
+                map(receiptItem ->
+                        printingFunction.apply(
+                                receiptItem.getDescription(),
+                                receiptItem.getPrice().toPlainString())).
+                collect(Collectors.toList()));
         receiptLines.add(printingFunction.apply("", "-----"));
         receiptLines.add(printingFunction.apply("Total savings", totalSavings.toPlainString()));
         receiptLines.add(printingFunction.apply("--------------------", "-----"));

@@ -2,6 +2,7 @@ package qmetric.supermarket.domain;
 
 import qmetric.supermarket.domain.promotion.Promotion;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +18,11 @@ public class Basket {
     private final Map<ItemType, Item> items = new HashMap<ItemType, Item>();
 
     public void add(Item item) {
-        items.merge(item.getItemType(), item, (a, b) -> new Item(a.getItemType(), a.getPriceDefinition(), a.getQuantity().add(b.getQuantity())));
+        items.merge(item.getItemType(), item, (firstItem, secondItem) ->
+                new Item(
+                        firstItem.getItemType(),
+                        firstItem.getPriceDefinition(),
+                        firstItem.getQuantity().add(secondItem.getQuantity())));
     }
 
     public Receipt calculateReceipt(List<Promotion> promotions) {
@@ -26,29 +31,34 @@ public class Basket {
 
         receiptItems.addAll(
                 items.values().stream().
-                        filter(i -> i.getPriceDefinition().getUnit().equals(Unit.KG)).
-                        map(i -> new ReceiptItem(
-                                i.getDescription(),
-                                i.getTotalPrice())
+                        filter(item -> item.getPriceDefinition().getUnit().equals(Unit.KG)).
+                        map(item -> new ReceiptItem(
+                                item.getDescription(),
+                                item.getTotalPrice())
                         ).collect(Collectors.toList()));
 
         receiptItems.addAll(
                 items.values().stream().
-                        filter(i -> i.getPriceDefinition().getUnit().equals(Unit.ITEM)).
-                        flatMap(i -> IntStream.range(0, i.getQuantity().intValue()).mapToObj(c -> new ReceiptItem(
-                                i.getDescription(),
-                                i.getAmountPerUnit()))
+                        filter(item -> item.getPriceDefinition().getUnit().equals(Unit.ITEM)).
+                        flatMap(item -> IntStream.rangeClosed(1, item.getQuantity().intValue()).mapToObj(counter -> new ReceiptItem(
+                                item.getDescription(),
+                                item.getAmountPerUnit()))
                         ).collect(Collectors.toList()));
 
         savings.addAll(
                 promotions.stream().
-                        filter(p -> items.containsKey(p.getItemType())).
-                        map(p -> new ReceiptItem(
-                                p.getDescription(),
-                                p.apply(getItemForType(p.getItemType())).subtract(getItemForType(p.getItemType()).getTotalPrice())
+                        filter(promotion -> items.containsKey(promotion.getItemType())).
+                        map(promotion -> new ReceiptItem(
+                                promotion.getDescription(),
+                                getSavings(promotion)
                         )).collect(Collectors.toList()));
 
         return new Receipt(receiptItems, savings);
+    }
+
+    private BigDecimal getSavings(Promotion promotion) {
+        return promotion.apply(getItemForType(promotion.getItemType())).
+                subtract(getItemForType(promotion.getItemType()).getTotalPrice());
     }
 
     private Item getItemForType(ItemType itemType) {

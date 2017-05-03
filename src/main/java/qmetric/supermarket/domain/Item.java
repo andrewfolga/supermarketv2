@@ -33,7 +33,7 @@ public class Item {
     }
 
     public BigDecimal getTotalPrice() {
-        return priceDefinition.getAmountPerUnit().multiply(quantity);
+        return priceDefinition.getAmountPerUnit().multiply(quantity).setScale(2, BigDecimal.ROUND_HALF_EVEN);
     }
 
     public BigDecimal getAmountPerUnit() {
@@ -43,6 +43,7 @@ public class Item {
     public String getDescription() {
         return String.format(getUnit().getDisplayFormat(),
                 getItemType().getName(),
-                getQuantity(), getPriceDefinition().getAmountPerUnit());
+                getQuantity(),
+                getPriceDefinition().getAmountPerUnit());
     }
 }

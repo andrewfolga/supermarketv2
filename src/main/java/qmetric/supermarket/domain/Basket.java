@@ -34,19 +34,19 @@ public class Basket {
 
         receiptItems.addAll(
                 items.values().stream().
-                    filter(i -> i.getPriceDefinition().getUnit().equals(Unit.ITEM)).
-                    flatMap(i -> IntStream.range(0, i.getQuantity().intValue()).mapToObj(c ->new ReceiptItem(
-                            i.getDescription(),
-                            i.getAmountPerUnit()))
-                    ).collect(Collectors.toList()));
+                        filter(i -> i.getPriceDefinition().getUnit().equals(Unit.ITEM)).
+                        flatMap(i -> IntStream.range(0, i.getQuantity().intValue()).mapToObj(c -> new ReceiptItem(
+                                i.getDescription(),
+                                i.getAmountPerUnit()))
+                        ).collect(Collectors.toList()));
 
         savings.addAll(
-            promotions.stream().
-                filter(p -> items.containsKey(p.getItemType())).
-                map(p -> new ReceiptItem(
-                        p.getDescription(),
-                        p.apply(getItemForType(p.getItemType())).subtract(getItemForType(p.getItemType()).getTotalPrice())
-                )).collect(Collectors.toList()));
+                promotions.stream().
+                        filter(p -> items.containsKey(p.getItemType())).
+                        map(p -> new ReceiptItem(
+                                p.getDescription(),
+                                p.apply(getItemForType(p.getItemType())).subtract(getItemForType(p.getItemType()).getTotalPrice())
+                        )).collect(Collectors.toList()));
 
         return new Receipt(receiptItems, savings);
     }

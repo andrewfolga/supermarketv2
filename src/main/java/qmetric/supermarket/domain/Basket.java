@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Created by andrzejfolga on 01/05/2017.
@@ -38,7 +37,7 @@ public class Basket {
                         filter(promotion -> itemsContainType(promotion.getItemType())).
                         map(promotion -> new ReceiptItem(
                                 promotion.getDescription(),
-                                getSavings(promotion)
+                                calculateSavings(promotion)
                         )).collect(Collectors.toList()));
 
         return new Receipt(receiptItems, savings);
@@ -48,16 +47,9 @@ public class Basket {
         return items.stream().map(Item::getItemType).filter(type -> type.equals(itemType)).findFirst().isPresent();
     }
 
-    private BigDecimal getSavings(final AbstractPromotion promotion) {
+    private BigDecimal calculateSavings(final AbstractPromotion promotion) {
 
-        final Map<ItemType, Item> combinedItems = items.stream().collect(Collectors.toMap(
-                Item::getItemType,
-                Function.identity(),
-                (Item item1, Item item2) ->
-                        new Item(
-                                item1.getItemType(),
-                                item1.getPriceDefinition(),
-                                item1.getQuantity().add(item2.getQuantity()))));
+        final Map<ItemType, Item> combinedItems = combineItems();
 
         final BigDecimal savings = combinedItems.values().stream().
                 filter(item -> item.getItemType().equals(promotion.getItemType())).
@@ -65,6 +57,17 @@ public class Basket {
                 reduce(BigDecimal.ZERO, BigDecimal::add);
 
         return savings;
+    }
+
+    private Map<ItemType, Item> combineItems() {
+        return items.stream().collect(Collectors.toMap(
+                    Item::getItemType,
+                    Function.identity(),
+                    (Item item1, Item item2) ->
+                            new Item(
+                                    item1.getItemType(),
+                                    item1.getPriceDefinition(),
+                                    item1.getQuantity().add(item2.getQuantity()))));
     }
 
 }

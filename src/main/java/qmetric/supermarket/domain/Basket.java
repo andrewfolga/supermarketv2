@@ -1,7 +1,6 @@
 package qmetric.supermarket.domain;
 
 import qmetric.supermarket.domain.promotion.Promotion;
-import qmetric.supermarket.domain.promotion.PromotionFunction;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -21,7 +20,11 @@ public class Basket {
         items.add(item);
     }
 
-    public Receipt calculateReceipt(final List<PromotionFunction> promotionFunctions) {
+    public void addAll(final List<Item> item) {
+        items.addAll(item);
+    }
+
+    public Receipt calculateReceipt(final List<Promotion> promotions) {
         final List<ReceiptItem> receiptItems = new ArrayList<>();
         final List<ReceiptItem> savings = new ArrayList<>();
 
@@ -33,8 +36,8 @@ public class Basket {
                         ).collect(Collectors.toList()));
 
         savings.addAll(
-                promotionFunctions.stream().
-                        filter(funtion -> itemsContainType(funtion.getItemType())).
+                promotions.stream().
+                        filter(promo -> itemsContainType(promo.getItemType())).
                         map(promotion -> new ReceiptItem(
                                 promotion.getDescription(),
                                 calculateSavings(promotion)
@@ -47,13 +50,13 @@ public class Basket {
         return items.stream().map(Item::getItemType).filter(type -> type.equals(itemType)).findFirst().isPresent();
     }
 
-    private BigDecimal calculateSavings(final PromotionFunction function) {
+    private BigDecimal calculateSavings(final Promotion promotion) {
 
         final Map<ItemType, Item> combinedItems = combineItems();
 
         final BigDecimal savings = combinedItems.values().stream().
-                filter(item -> item.getItemType().equals(function.getItemType())).
-                map(item -> function.apply(item).subtract(item.getTotalPrice())).
+                filter(item -> item.getItemType().equals(promotion.getItemType())).
+                map(item -> promotion.apply(item).subtract(item.getTotalPrice())).
                 reduce(BigDecimal.ZERO, BigDecimal::add);
 
         return savings;

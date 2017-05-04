@@ -5,11 +5,10 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import qmetric.supermarket.domain.promotion.Promotion;
-import qmetric.supermarket.domain.promotion.PromotionFunction;
 import qmetric.supermarket.domain.promotion.PromotionType;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static qmetric.supermarket.domain.ItemType.*;
@@ -23,14 +22,14 @@ public class BasketTest {
     public final JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
     private Basket basket = new Basket();
-    private List<PromotionFunction> availablePromotions;
+    private List<Promotion> availablePromotions;
 
     @Before
     public void setUp() {
-        availablePromotions = buildPromotionFunctions(
-                new PromotionFunction(Promotion.quantityForQuantity(new BigDecimal("3.00"), new BigDecimal("2.00"), BEANS, PromotionType.THREE_FOR_TWO)),
-                new PromotionFunction(Promotion.quantityForPrice(new BigDecimal("2.00"), new BigDecimal("2.00"), COKE, PromotionType.TWO_FOR_PRICE)));
-        basket = buildBasket(
+        availablePromotions = Arrays.asList(
+                Promotion.quantityForQuantity(new BigDecimal("3.00"), new BigDecimal("2.00"), BEANS, PromotionType.THREE_FOR_TWO),
+                Promotion.quantityForPrice(new BigDecimal("2.00"), new BigDecimal("2.00"), COKE, PromotionType.TWO_FOR_PRICE));
+        basket.addAll(Arrays.asList(
                 new Item(BEANS, new PriceDefinition(new BigDecimal("0.50"), Unit.ITEM)),
                 new Item(BEANS, new PriceDefinition(new BigDecimal("0.50"), Unit.ITEM)),
                 new Item(BEANS, new PriceDefinition(new BigDecimal("0.50"), Unit.ITEM)),
@@ -41,7 +40,7 @@ public class BasketTest {
                 new Item(COKE, new PriceDefinition(new BigDecimal("1.50"), Unit.ITEM)),
                 new Item(COKE, new PriceDefinition(new BigDecimal("1.50"), Unit.ITEM)),
                 new Item(ORANGES, new PriceDefinition(new BigDecimal("3.00"), Unit.KG), new BigDecimal("0.50")),
-                new Item(JUICE, new PriceDefinition(new BigDecimal("2.00"), Unit.L), new BigDecimal("0.50")));
+                new Item(JUICE, new PriceDefinition(new BigDecimal("2.00"), Unit.L), new BigDecimal("0.50"))));
     }
 
     @Test
@@ -98,19 +97,4 @@ public class BasketTest {
         });
     }
 
-    private List<PromotionFunction> buildPromotionFunctions(final PromotionFunction... promotionFunctions) {
-        List<PromotionFunction> promotionFunctionList = new ArrayList<>();
-        for (PromotionFunction promotionFunction : promotionFunctions) {
-            promotionFunctionList.add(promotionFunction);
-        }
-        return promotionFunctionList;
-    }
-
-    private Basket buildBasket(final Item... items) {
-        Basket basket = new Basket();
-        for (Item item : items) {
-            basket.add(item);
-        }
-        return basket;
-    }
 }

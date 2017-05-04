@@ -10,8 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import qmetric.supermarket.domain.promotion.Promotion;
-import qmetric.supermarket.domain.promotion.PromotionFunction;
-import qmetric.supermarket.domain.promotion.PromotionFunctionBuilder;
 import qmetric.supermarket.domain.promotion.PromotionType;
 
 import java.math.BigDecimal;
@@ -27,13 +25,9 @@ import static qmetric.supermarket.domain.ItemType.BEANS;
 public class ReceiptBuilderTest {
 
     public static final List<Promotion> NO_PROMOTIONS = Lists.newArrayList();
-    public static final List<PromotionFunction> NO_PROMOTION_FUNCTIONS = Lists.newArrayList();
     public static final List<Promotion> PROMOTIONS = Lists.newArrayList(Promotion.quantityForQuantity(new BigDecimal("3.00"), new BigDecimal("2.00"), BEANS, PromotionType.THREE_FOR_TWO));
-    public static final List<PromotionFunction> PROMOTION_FUNCTIONS = Lists.newArrayList(new PromotionFunction(Promotion.quantityForQuantity(new BigDecimal("3.00"), new BigDecimal("2.00"), BEANS, PromotionType.THREE_FOR_TWO)));
     @Mock
     private Basket basket;
-    @Mock
-    private PromotionFunctionBuilder promotionFunctionBuilder;
     @Mock
     private Receipt receipt;
 
@@ -45,31 +39,27 @@ public class ReceiptBuilderTest {
 
     @Before
     public void setUp() throws Exception {
-        receiptBuilder = new ReceiptBuilder(promotionFunctionBuilder);
+        receiptBuilder = new ReceiptBuilder();
     }
 
     @Test
     public void shouldBuildBasicReceipt() {
-        when(promotionFunctionBuilder.build(NO_PROMOTIONS)).thenReturn(NO_PROMOTION_FUNCTIONS);
-        when(basket.calculateReceipt(NO_PROMOTION_FUNCTIONS)).thenReturn(receipt);
+        when(basket.calculateReceipt(NO_PROMOTIONS)).thenReturn(receipt);
 
         Receipt result = receiptBuilder.build(basket, NO_PROMOTIONS);
 
-        verify(promotionFunctionBuilder).build(NO_PROMOTIONS);
-        verify(basket).calculateReceipt(NO_PROMOTION_FUNCTIONS);
-        verifyNoMoreInteractions(basket, promotionFunctionBuilder);
+        verify(basket).calculateReceipt(NO_PROMOTIONS);
+        verifyNoMoreInteractions(basket);
         softly.assertThat(result).as("Receipt").isEqualTo(receipt);
     }
 
     @Test
     public void shouldBuildReceiptWithPromotion() {
-        when(promotionFunctionBuilder.build(PROMOTIONS)).thenReturn(PROMOTION_FUNCTIONS);
-        when(basket.calculateReceipt(PROMOTION_FUNCTIONS)).thenReturn(receipt);
+        when(basket.calculateReceipt(PROMOTIONS)).thenReturn(receipt);
 
         Receipt result = receiptBuilder.build(basket, PROMOTIONS);
 
-        verify(promotionFunctionBuilder).build(PROMOTIONS);
-        verify(basket).calculateReceipt(PROMOTION_FUNCTIONS);
+        verify(basket).calculateReceipt(PROMOTIONS);
         verifyNoMoreInteractions(basket);
         softly.assertThat(result).as("Receipt").isEqualTo(receipt);
     }

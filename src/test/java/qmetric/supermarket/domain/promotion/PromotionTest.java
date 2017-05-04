@@ -14,7 +14,7 @@ import java.util.Optional;
 /**
  * Created by andrzejfolga on 02/05/2017.
  */
-public class PromotionFunctionTest {
+public class PromotionTest {
 
     public static final String TOTAL_TO_PAY = "Total to Pay";
     @Rule
@@ -31,22 +31,22 @@ public class PromotionFunctionTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldNotApplyPromotionIfTriggerQuantityNotProvided() {
-        buildPromotionFunction(null, TARGET_QUANTITY_2, TARGET_PRICE_EMPTY, ItemType.BEANS, PromotionType.TWO_FOR_PRICE);
+        buildPromotion(null, TARGET_QUANTITY_2, TARGET_PRICE_EMPTY, ItemType.BEANS, PromotionType.TWO_FOR_PRICE);
     }
 
     @Test(expected = IllegalStateException.class)
     public void shouldNotApplyPromotionIfTargetQuantityLowerThanTriggerQuantity() {
-        buildPromotionFunction(TRIGGER_QUANTITY_3, TARGET_QUANTITY_3, TARGET_PRICE_EMPTY, ItemType.BEANS, PromotionType.THREE_FOR_TWO);
+        buildPromotion(TRIGGER_QUANTITY_3, TARGET_QUANTITY_3, TARGET_PRICE_EMPTY, ItemType.BEANS, PromotionType.THREE_FOR_TWO);
     }
 
     @Test(expected = IllegalStateException.class)
     public void shouldNotApplyPromotionIfTriggerQuantityProvidedAndNeitherTargetQuantityNorTargetPrice() {
-        buildPromotionFunction(TRIGGER_QUANTITY_3, TARGET_QUANTITY_EMPTY, TARGET_PRICE_EMPTY, ItemType.BEANS, PromotionType.THREE_FOR_TWO);
+        buildPromotion(TRIGGER_QUANTITY_3, TARGET_QUANTITY_EMPTY, TARGET_PRICE_EMPTY, ItemType.BEANS, PromotionType.THREE_FOR_TWO);
     }
 
     @Test
     public void shouldNotApply3For2PromotionForDifferentItemType() {
-        PromotionFunction promotion = buildPromotionFunction(TRIGGER_QUANTITY_3, TARGET_QUANTITY_2, TARGET_PRICE_EMPTY, ItemType.BEANS, PromotionType.THREE_FOR_TWO);
+        Promotion promotion = buildPromotion(TRIGGER_QUANTITY_3, TARGET_QUANTITY_2, TARGET_PRICE_EMPTY, ItemType.BEANS, PromotionType.THREE_FOR_TWO);
         Item item = new Item(ItemType.COKE, new PriceDefinition(new BigDecimal("2.00"), Unit.ITEM), new BigDecimal("5.00"));
 
         BigDecimal totalToPay = promotion.apply(item);
@@ -56,7 +56,7 @@ public class PromotionFunctionTest {
 
     @Test
     public void shouldApply3For2Promotion() {
-        PromotionFunction promotion = buildPromotionFunction(TRIGGER_QUANTITY_3, TARGET_QUANTITY_2, TARGET_PRICE_EMPTY, ItemType.BEANS, PromotionType.THREE_FOR_TWO);
+        Promotion promotion = buildPromotion(TRIGGER_QUANTITY_3, TARGET_QUANTITY_2, TARGET_PRICE_EMPTY, ItemType.BEANS, PromotionType.THREE_FOR_TWO);
         Item item = new Item(ItemType.BEANS, new PriceDefinition(new BigDecimal("2.00"), Unit.ITEM), new BigDecimal("5.00"));
 
         BigDecimal totalToPay = promotion.apply(item);
@@ -66,7 +66,7 @@ public class PromotionFunctionTest {
 
     @Test
     public void shouldApply2ForPricePromotion() {
-        PromotionFunction promotion = buildPromotionFunction(TRIGGER_QUANTITY_2, TARGET_QUANTITY_EMPTY, TARGET_PRICE_1, ItemType.COKE, PromotionType.TWO_FOR_PRICE);
+        Promotion promotion = buildPromotion(TRIGGER_QUANTITY_2, TARGET_QUANTITY_EMPTY, TARGET_PRICE_1, ItemType.COKE, PromotionType.TWO_FOR_PRICE);
         Item item = new Item(ItemType.COKE, new PriceDefinition(new BigDecimal("1.00"), Unit.ITEM), new BigDecimal("4.0"));
 
         BigDecimal totalToPay = promotion.apply(item);
@@ -76,7 +76,7 @@ public class PromotionFunctionTest {
 
     @Test
     public void shouldApply4For3Promotion() {
-        PromotionFunction promotion = buildPromotionFunction(TRIGGER_QUANTITY_4, TARGET_QUANTITY_3, TARGET_PRICE_EMPTY, ItemType.ORANGES, PromotionType.TWO_FOR_PRICE);
+        Promotion promotion = buildPromotion(TRIGGER_QUANTITY_4, TARGET_QUANTITY_3, TARGET_PRICE_EMPTY, ItemType.ORANGES, PromotionType.TWO_FOR_PRICE);
         Item item = new Item(ItemType.ORANGES, new PriceDefinition(new BigDecimal("1.00"), Unit.ITEM), new BigDecimal("6.0"));
 
         BigDecimal totalToPay = promotion.apply(item);
@@ -84,8 +84,8 @@ public class PromotionFunctionTest {
         softly.assertThat(totalToPay).as(TOTAL_TO_PAY).isEqualTo(new BigDecimal("5.00"));
     }
 
-    private PromotionFunction buildPromotionFunction(final BigDecimal triggerQuantity, final Optional<BigDecimal> targetQuantity, final Optional<BigDecimal> targetPrice, final ItemType itemType, final PromotionType promotionType) {
-        return new PromotionFunction(new Promotion(triggerQuantity, targetQuantity, targetPrice, itemType, promotionType));
+    private Promotion buildPromotion(final BigDecimal triggerQuantity, final Optional<BigDecimal> targetQuantity, final Optional<BigDecimal> targetPrice, final ItemType itemType, final PromotionType promotionType) {
+        return new Promotion(triggerQuantity, targetQuantity, targetPrice, itemType, promotionType);
     }
 
 }

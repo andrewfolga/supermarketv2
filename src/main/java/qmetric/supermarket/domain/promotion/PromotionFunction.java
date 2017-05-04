@@ -12,9 +12,9 @@ import java.util.function.Function;
  */
 public class PromotionFunction implements Function<Item, BigDecimal> {
 
-    protected final BigDecimal triggerQuantity;
-    protected final Optional<BigDecimal> targetQuantity;
-    protected final Optional<BigDecimal> targetPrice;
+    private final BigDecimal triggerQuantity;
+    private final Optional<BigDecimal> targetQuantity;
+    private final Optional<BigDecimal> targetPrice;
     private final ItemType itemType;
     private final PromotionType promotionType;
 

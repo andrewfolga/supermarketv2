@@ -1,7 +1,5 @@
 package qmetric.supermarket.domain;
 
-import qmetric.supermarket.domain.promotion.Promotion;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;

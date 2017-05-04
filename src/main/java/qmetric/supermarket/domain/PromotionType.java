@@ -1,4 +1,4 @@
-package qmetric.supermarket.domain.promotion;
+package qmetric.supermarket.domain;
 
 /**
  * Created by andrzejfolga on 01/05/2017.

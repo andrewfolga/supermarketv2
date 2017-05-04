@@ -3,10 +3,7 @@ package qmetric.supermarket.domain.promotion;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Rule;
 import org.junit.Test;
-import qmetric.supermarket.domain.Item;
-import qmetric.supermarket.domain.ItemType;
-import qmetric.supermarket.domain.PriceDefinition;
-import qmetric.supermarket.domain.Unit;
+import qmetric.supermarket.domain.*;
 
 import java.math.BigDecimal;
 import java.util.Optional;

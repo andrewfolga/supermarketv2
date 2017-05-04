@@ -1,8 +1,6 @@
-package qmetric.supermarket.domain.promotion;
+package qmetric.supermarket.domain;
 
 import org.apache.commons.lang3.Validate;
-import qmetric.supermarket.domain.Item;
-import qmetric.supermarket.domain.ItemType;
 
 import java.math.BigDecimal;
 import java.util.Optional;

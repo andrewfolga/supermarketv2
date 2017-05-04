@@ -4,8 +4,6 @@ import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import qmetric.supermarket.domain.promotion.Promotion;
-import qmetric.supermarket.domain.promotion.PromotionType;
 
 import java.math.BigDecimal;
 import java.util.Arrays;

@@ -9,8 +9,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import qmetric.supermarket.domain.promotion.Promotion;
-import qmetric.supermarket.domain.promotion.PromotionType;
 
 import java.math.BigDecimal;
 import java.util.List;

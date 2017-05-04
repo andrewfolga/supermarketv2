@@ -1,4 +1,4 @@
-package qmetric.supermarket.domain.promotion;
+package qmetric.supermarket.domain;
 
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Rule;

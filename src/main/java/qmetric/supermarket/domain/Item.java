@@ -31,6 +31,10 @@ public class Item {
         return priceDefinition;
     }
 
+    public BigDecimal getAmountPerUnit() {
+        return priceDefinition.getAmountPerUnit();
+    }
+
     public Unit getUnit() {
         return priceDefinition.getUnit();
     }

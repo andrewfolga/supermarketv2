@@ -4,6 +4,10 @@ import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import qmetric.supermarket.domain.promotion.Promotion;
+import qmetric.supermarket.domain.promotion.PromotionType;
+import qmetric.supermarket.domain.promotion.ThreeForTwoPromotion;
+import qmetric.supermarket.domain.promotion.TwoForPricePromotion;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -25,8 +29,8 @@ public class BasketTest {
     @Before
     public void setUp() {
         availablePromotions = Arrays.asList(
-                Promotion.quantityForQuantity(new BigDecimal("3.00"), new BigDecimal("2.00"), BEANS, PromotionType.THREE_FOR_TWO),
-                Promotion.quantityForPrice(new BigDecimal("2.00"), new BigDecimal("2.00"), COKE, PromotionType.TWO_FOR_PRICE));
+                new ThreeForTwoPromotion(BEANS),
+                new TwoForPricePromotion(new BigDecimal("2.00"), COKE));
         basket.addAll(Arrays.asList(
                 new Item(BEANS, new PriceDefinition(new BigDecimal("0.50"), Unit.ITEM)),
                 new Item(BEANS, new PriceDefinition(new BigDecimal("0.50"), Unit.ITEM)),
@@ -71,6 +75,7 @@ public class BasketTest {
         Receipt receipt = basket.calculateReceipt(availablePromotions);
 
         receipt.hasReceiptItems(receiptItems -> {
+            softly.assertThat(receiptItems.size()).as("receipt items size").isEqualTo(11);
             ReceiptItem receiptItemBeans = new ReceiptItem("Beans", new BigDecimal("0.50"));
             softly.assertThat(receiptItems.stream().filter(receiptItem -> receiptItem.equals(receiptItemBeans)).count() == 4).as("Number of beans receipt items").isTrue();
             ReceiptItem receiptItemCoke = new ReceiptItem("Coke", new BigDecimal("1.50"));
@@ -87,6 +92,7 @@ public class BasketTest {
         Receipt receipt = basket.calculateReceipt(availablePromotions);
 
         receipt.hasSavingItems(savingItems -> {
+            softly.assertThat(savingItems.size()).as("saving items size").isEqualTo(2);
             ReceiptItem savingBeans = new ReceiptItem("Beans 3 for 2", new BigDecimal("-0.50"));
             softly.assertThat(savingItems.stream().filter(receiptItem -> receiptItem.equals(savingBeans)).count() == 1).as("Number of beans savings items").isTrue();
             ReceiptItem savingCoke = new ReceiptItem("Coke 2 for £2.00", new BigDecimal("-2.00"));

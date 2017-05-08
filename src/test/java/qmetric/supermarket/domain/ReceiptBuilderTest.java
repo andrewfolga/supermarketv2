@@ -9,8 +9,9 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import qmetric.supermarket.domain.promotion.Promotion;
+import qmetric.supermarket.domain.promotion.ThreeForTwoPromotion;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
@@ -23,7 +24,7 @@ import static qmetric.supermarket.domain.ItemType.BEANS;
 public class ReceiptBuilderTest {
 
     public static final List<Promotion> NO_PROMOTIONS = Lists.newArrayList();
-    public static final List<Promotion> PROMOTIONS = Lists.newArrayList(Promotion.quantityForQuantity(new BigDecimal("3.00"), new BigDecimal("2.00"), BEANS, PromotionType.THREE_FOR_TWO));
+    public static final List<Promotion> PROMOTIONS = Lists.newArrayList(new ThreeForTwoPromotion(BEANS));
     @Mock
     private Basket basket;
     @Mock

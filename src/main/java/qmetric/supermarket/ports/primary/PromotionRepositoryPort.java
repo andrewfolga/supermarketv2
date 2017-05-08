@@ -1,6 +1,6 @@
 package qmetric.supermarket.ports.primary;
 
-import qmetric.supermarket.domain.Promotion;
+import qmetric.supermarket.domain.promotion.Promotion;
 
 import java.util.List;
 
